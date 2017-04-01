@@ -10,8 +10,8 @@ Introduction
     :target: https://gitter.im/adafruit/circuitpython?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge
     :alt: Gitter
 
-This driver provides USB HID related constants. In the future it will include
-helper functions and classes as well.
+This driver simulates USB HID devices, such as keyboard, mouse, and joystick.
+Right now only keyboard is implemented.
 
 Dependencies
 =============
@@ -26,39 +26,53 @@ This is easily achieved by downloading
 Usage Example
 =============
 
-The current `keyboard` module stores key constants which make it easier to
-construct keypress reports for a keyboard device.
+The ``keyboard`` module defines keycode constants and a ``Keyboard`` class to
+construct and send keypress reports for a USB keyboard device.
 
 .. code-block:: python
 
-    import usb_hid
-    import adafruit_hid.keyboard as kbd
-    import time
+    from adafruit_hid.keyboard import Keyboard
 
-    report = bytearray(8) # Keyboard reports are always 8 bytes.
+    # Find a keyboard device to talk to.
+    kbd = Keyboard()
 
-    # Devices are initialized earlier so find the one for the keyboard.
-    keyboard = None
-    for device in usb_hid.devices:
-        if device.usage_page is 0x1 and device.usage is 0x06:
-            keyboard = device
-            break
+    # Simulate typing. Press and release the A key (not shifted),
+    # then the B key, then c, then the Enter key.
+    # Type "abc" followed by return.
+    kbd.type("abc\n")
 
-    # The first byte of the report includes a bitfield indicating which
-    # modifiers are pressed. Their bit position is their code's difference from
-    # 0xE0.
-    report[0] |= 1 << (kbd.LEFT_SHIFT - 0xE0)
-    # Normal keys are simply their byte code in bytes 2-7. When fewer than six
-    # keys are pressed then the trailing bytes are zero.
-    report[2] = kbd.A
-    keyboard.send_report(report)
+    # Type control-x, then "Abc", then backspace.
+    kbd.type((Keyboard.CONTROL, 'x'), 'Abc', Keyboard.BACKSPACE)
 
-    time.sleep(0.1)
+    # Press and hold left-hand Control and right-hand Alt.
+    kbd.press_keys(Keyboard.CONTROL, Keyboard.ALT)
 
-    # Clear the key presses and send another report.
-    report[0] = 0
-    report[2] = 0
-    keyboard.send_report(report)
+    # Press and hold the A and B keys (lower case, not shifted).
+    kbd.press_keys('ab')
+
+    # Press and hold the A and B keys (same effect as above).
+    kbd.press_keys('a', 'b')
+
+    # Press capital C. This implies pressing left Shift as well,
+    # because the character is capitalized.
+    kbd.press_keys('C')
+
+    # Release the B key.
+    kbd.release_keys('b')
+
+    # Release all keys.
+    kbd.release_all()
+
+    # Press '5' on the keypad and the F8 key.
+    kbd.press_keys(Keyboard.KEYPAD_FIVE, Keyboard.F8)
+
+    # Press the shifted '1' key to get '!' (exclamation mark).
+    kbd.press_keys(Keyboard.SHIFT, '1')
+
+    # Same effect as above. The '!' implies pressing Shift and '1'.
+    kbd.press_keys('!').
+
+
 
 Contributing
 ============

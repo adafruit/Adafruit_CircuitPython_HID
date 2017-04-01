@@ -4,4 +4,4 @@
 .. automodule:: adafruit_hid.keyboard
     :members:
     :member-order: bysource
-    :synopsis: Provide keyboard HID related helpers.
+    :synopsis: HID keyboard simulation
