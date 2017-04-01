@@ -22,7 +22,7 @@
 #
 
 """
-:mod:`adafruit_hid.Keyboard`
+:mod:`adafruit_hid.keyboard`
 ====================================================
 
 * Author(s): Scott Shawcroft, Dan Halbert
