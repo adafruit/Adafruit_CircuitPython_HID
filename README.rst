@@ -11,7 +11,8 @@ Introduction
     :alt: Gitter
 
 This driver simulates USB HID devices, such as keyboard, mouse, and joystick.
-Right now only keyboard is implemented.
+
+Currently keyboard and mouse are implemented.
 
 Dependencies
 =============
@@ -26,51 +27,80 @@ This is easily achieved by downloading
 Usage Example
 =============
 
-The ``keyboard`` module defines keycode constants and a ``Keyboard`` class to
-construct and send keypress reports for a USB keyboard device.
+The ``Keyboard`` class sends keypress reports for a USB keyboard device to the host.
+
+The ``Keycode`` class defines USB HID keycodes to send using ``Keyboard``.
 
 .. code-block:: python
 
-    from adafruit_hid.keyboard import Keyboard
+    from adafruit_hid import Keyboard
+    from adafruit_hid import Keycode
 
-    # Find a keyboard device to talk to.
+    # Set up a keyboard device.
     kbd = Keyboard()
 
-    # Simulate typing. Press and release the A key (not shifted),
-    # then the B key, then c, then the Enter key.
-    # Type "abc" followed by return.
-    kbd.type("abc\n")
+    # Type control-x.
+    kbd.press(Keycode.CONTROL, Keycode.X)
+    kbd.release_all()
 
-    # Type control-x, then "Abc", then backspace.
-    kbd.type((Keyboard.CONTROL, 'x'), 'Abc', Keyboard.BACKSPACE)
+    # Type capital 'A'.
+    kbd.press(Keycode.SHIFT, Keycode.A)
+    kbd.release_all()
 
-    # Press and hold left-hand Control and right-hand Alt.
-    kbd.press_keys(Keyboard.CONTROL, Keyboard.ALT)
-
-    # Press and hold the A and B keys (lower case, not shifted).
-    kbd.press_keys('ab')
-
-    # Press and hold the A and B keys (same effect as above).
-    kbd.press_keys('a', 'b')
-
-    # Press capital C. This implies pressing left Shift as well,
-    # because the character is capitalized.
-    kbd.press_keys('C')
-
-    # Release the B key.
-    kbd.release_keys('b')
-
+    # Press and hold the shifted '1' key to get '!' (exclamation mark).
+    kbd.press(Keycode.SHIFT, Keycode.ONE)
+    # Release the ONE key and send another report.
+    kbd.release(Keycode.ONE)
+    # Press shifted '2' to get '@'.
+    kbd.press(Keycode.TWO)
     # Release all keys.
     kbd.release_all()
 
-    # Press '5' on the keypad and the F8 key.
-    kbd.press_keys(Keyboard.KEYPAD_FIVE, Keyboard.F8)
+The ``USKeyboardLayout`` sends ASCII characters using keypresses. It assumes
+the host is set to accept keypresses from a US keyboard.
 
-    # Press the shifted '1' key to get '!' (exclamation mark).
-    kbd.press_keys(Keyboard.SHIFT, '1')
+If the host is expecting a non-US keyboard, the character to key mapping provided by
+``USKeyboardLayout`` will not always be correct.
+Different keypresses will be needed in some cases. For instance, to type an ``'A'`` on
+a French keyboard (AZERTY instead of QWERTY), ``Keycode.Q`` should be pressed.
 
-    # Same effect as above. The '!' implies pressing Shift and '1'.
-    kbd.press_keys('!').
+Currently this package provides only ``USKeyboardLayout``. More ``KeyboardLayout``
+classes could be added to handle non-US keyboards and the different input methods provided
+by various operating systems.
+
+.. code-block:: python
+
+    from adafruit_hid import Keyboard
+    from adafruit_hid import USKeyboardLayout
+
+    kbd = Keyboard()
+    layout = USKeyboardLayout(kbd)
+
+    # Type 'abc' followed by Enter (a newline).
+    layout.write('abc\n')
+
+    # Get the keycodes needed to type a '$'.
+    # The method will return (Keycode.SHIFT, Keycode.FOUR).
+    keycodes = layout.keycodes('$')
+
+The ``Mouse` class simulates a three-button mouse with a scroll wheel.
+
+.. code-block:: python
+
+    from adafruit_hid import Mouse
+
+    m = Mouse()
+
+    # Click the left mouse button.
+    m.click(Mouse.LEFT_BUTTON)
+
+    # Move the mouse diagonally to the upper left.
+    m.move(-100, 100, 0)
+
+    # Move the mouse while holding down the left button.
+    m.press(Mouse.LEFT_BUTTON)
+    m.move(50, 20, 0)
+    m.release_all()       # or m.release(Mouse.LEFT_BUTTON)
 
 
 
