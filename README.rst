@@ -10,9 +10,7 @@ Introduction
     :target: https://gitter.im/adafruit/circuitpython?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge
     :alt: Gitter
 
-This driver simulates USB HID devices, such as keyboard, mouse, and joystick.
-
-Currently keyboard and mouse are implemented.
+This driver simulates USB HID devices. Currently keyboard and mouse are implemented.
 
 Dependencies
 =============
@@ -33,8 +31,8 @@ The ``Keycode`` class defines USB HID keycodes to send using ``Keyboard``.
 
 .. code-block:: python
 
-    from adafruit_hid import Keyboard
-    from adafruit_hid import Keycode
+    from adafruit_hid.keyboard import Keyboard
+    from adafruit_hid.keycode import Keycode
 
     # Set up a keyboard device.
     kbd = Keyboard()
@@ -56,25 +54,25 @@ The ``Keycode`` class defines USB HID keycodes to send using ``Keyboard``.
     # Release all keys.
     kbd.release_all()
 
-The ``USKeyboardLayout`` sends ASCII characters using keypresses. It assumes
+The ``KeyboardLayoutUS`` sends ASCII characters using keypresses. It assumes
 the host is set to accept keypresses from a US keyboard.
 
 If the host is expecting a non-US keyboard, the character to key mapping provided by
-``USKeyboardLayout`` will not always be correct.
+``KeyboardLayoutUS`` will not always be correct.
 Different keypresses will be needed in some cases. For instance, to type an ``'A'`` on
 a French keyboard (AZERTY instead of QWERTY), ``Keycode.Q`` should be pressed.
 
-Currently this package provides only ``USKeyboardLayout``. More ``KeyboardLayout``
+Currently this package provides only ``KeyboardLayoutUS``. More ``KeyboardLayout``
 classes could be added to handle non-US keyboards and the different input methods provided
 by various operating systems.
 
 .. code-block:: python
 
-    from adafruit_hid import Keyboard
-    from adafruit_hid import USKeyboardLayout
+    from adafruit_hid.keyboard import Keyboard
+    from adafruit_hid.keyboard_layout_us import KeyboardLayoutUS
 
     kbd = Keyboard()
-    layout = USKeyboardLayout(kbd)
+    layout = KeyboardLayoutUS(kbd)
 
     # Type 'abc' followed by Enter (a newline).
     layout.write('abc\n')
@@ -83,11 +81,11 @@ by various operating systems.
     # The method will return (Keycode.SHIFT, Keycode.FOUR).
     keycodes = layout.keycodes('$')
 
-The ``Mouse` class simulates a three-button mouse with a scroll wheel.
+The ``Mouse`` class simulates a three-button mouse with a scroll wheel.
 
 .. code-block:: python
 
-    from adafruit_hid import Mouse
+    from adafruit_hid.mouse import Mouse
 
     m = Mouse()
 
@@ -117,4 +115,7 @@ API Reference
 .. toctree::
    :maxdepth: 2
 
-   api
+   keyboard
+   keycode
+   keyboard_layout_us
+   mouse

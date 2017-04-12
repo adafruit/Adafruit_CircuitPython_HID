@@ -22,7 +22,7 @@
 #
 
 """
-:mod:`adafruit_hid.Mouse`
+:mod:`adafruit_hid.mouse.Mouse`
 ====================================================
 
 * Author(s): Dan Halbert
@@ -33,9 +33,11 @@ class Mouse:
     """Send USB HID mouse reports."""
 
     LEFT_BUTTON = 1
+    """Left mouse button."""
     RIGHT_BUTTON = 2
+    """Right mouse button."""
     MIDDLE_BUTTON = 4
-    ALL_BUTTONS = LEFT_BUTTON | RIGHT_BUTTON | MIDDLE_BUTTON
+    """Middle mouse button."""
 
     def __init__(self):
         """Create a Mouse object that will send USB mouse HID reports."""
@@ -56,12 +58,26 @@ class Mouse:
 
 
     def press(self, buttons):
-        """Press the given mouse buttons."""
+        """Press the given mouse buttons.
+
+        :param buttons: a bitwise-or'd combination of ``LEFT_BUTTON``, ``MIDDLE_BUTTON``, and ``RIGHT_BUTTON``.
+
+        Examples::
+
+            # Press the left button.
+            m.press(Mouse.LEFT_BUTTON)
+
+            # Press the left and right buttons simultaneously.
+            m.press(Mouse.LEFT_BUTTON | Mouse.RIGHT_BUTTON)
+        """
         self.report[0] |= buttons
         self.move(0, 0, 0)
 
     def release(self, buttons):
-        """Release the given mouse buttons."""
+        """Release the given mouse buttons.
+
+        :param buttons: a bitwise-or'd combination of ``LEFT_BUTTON``, ``MIDDLE_BUTTON``, and ``RIGHT_BUTTON``.
+       """
         self.report[0] &= ~buttons
         self.move(0, 0, 0)
 
@@ -71,19 +87,53 @@ class Mouse:
         self.move(0, 0, 0)
 
     def click(self, buttons):
-        """Press and release the given mouse buttons."""
+        """Press and release the given mouse buttons.
+
+        :param buttons: a bitwise-or'd combination of ``LEFT_BUTTON``, ``MIDDLE_BUTTON``, and ``RIGHT_BUTTON``.
+
+        Examples::
+
+            # Click the left button.
+            m.click(Mouse.LEFT_BUTTON)
+
+            # Double-click the left button.
+            m.click(Mouse.LEFT_BUTTON)
+            m.click(Mouse.LEFT_BUTTON)
+        """
+
         self.press(buttons)
         self.release(buttons)
 
     def move(self, x_distance, y_distance, wheel_turn):
         """Move the mouse and turn the wheel as directed.
 
-        All arguments should be in the range -127 to 127 inclusive.
+        :param x_distance: Move the mouse along the x axis. Negative is to the left, positive is to the right.
+        :param y_distance: Move the mouse along the y axis. Negative is toward the user, positive is away from the user.
+        :param wheel turn: Rotate the wheel this amount. Negative is toward the user, positive is away from the user.
+        :raises ValueError: if any argument is not in the range -127 to 127 inclusive.
+
+        Examples::
+
+            # Move 100 to the left.
+            m.move(-100, 0, 0)
+
+            # Move diagonally to the upper right.
+            m.move(50, 20, 0)
+
+            # Roll the mouse wheel away from the user.
+            m.move(0, 0, 5)
         """
-        self.report[1] = x_distance
-        self.report[2] = y_distance
-        self.report[3] = wheel_turn
-        self.hid_mouse.send_report(self.report)
+        if (self._distance_ok(x_distance)
+                and self._distance_ok(y_distance)
+                and self._distance_ok(wheel_turn)):
+            self.report[1] = x_distance
+            self.report[2] = y_distance
+            self.report[3] = wheel_turn
+            self.hid_mouse.send_report(self.report)
+        else:
+            raise ValueError('All arguments must be >= -127 and <= 127')
 
-
-
+    @staticmethod
+    def _distance_ok(dist):
+        """Return True if dist is in the range [-127,127]"""
+        return -127 <= dist <= 127

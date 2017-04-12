@@ -24,16 +24,7 @@
 `adafruit_hid`
 ====================================================
 
-TODO(description)
+This driver simulates USB HID devices. Currently keyboard and mouse are implemented.
 
 * Author(s): Scott Shawcroft, Dan Halbert
 """
-# Import these for convenience so that the user may import the packages classes
-# directly without needing to know the file names.
-# E.g.:
-# from adafruit_hid import Keyboard
-
-from .keyboard import Keyboard
-from .keycode import Keycode
-from .mouse import Mouse
-from .us_keyboard_layout import USKeyboardLayout

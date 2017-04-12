@@ -1,6 +1,6 @@
 # The MIT License (MIT)
 #
-# Copyright (c) 2017 Scott Shawcroft for Adafruit Industries
+# Copyright (c) 2017 Dan Halbert
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,7 @@
 #
 
 """
-:mod:`adafruit_hid.Keyboard`
+:mod:`adafruit_hid.keyboard.Keyboard`
 ====================================================
 
 * Author(s): Scott Shawcroft, Dan Halbert
@@ -31,7 +31,7 @@
 from micropython import const
 import usb_hid
 
-from . import Keycode
+from .keycode import Keycode
 
 class Keyboard:
     """Send HID keyboard reports."""
@@ -66,10 +66,14 @@ class Keyboard:
     def press(self, *keycodes):
         """Send a report indicating that the given keys have been pressed.
 
+        :param keycodes: Press these keycodes all at once.
+        :raises ValueError: if more than six regular keys are pressed.
+
         Keycodes may be modifiers or regular keys.
         No more than six regular keys may be pressed simultaneously.
 
-        Examples:
+        Examples::
+
             from adafruit_hid.keycode import Keycode
 
             # Press ctrl-x.
@@ -88,7 +92,12 @@ class Keyboard:
     def release(self, *keycodes):
         """Send a USB HID report indicating that the given keys have been released.
 
-        Examples:
+        :param keycodes: Release these keycodes all at once.
+
+        If a keycode to be released was not pressed, it is ignored.
+
+        Example::
+
             # release SHIFT key
             kbd.release(Keycode.SHIFT)
         """

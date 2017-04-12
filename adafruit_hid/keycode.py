@@ -22,7 +22,7 @@
 #
 
 """
-:mod:`adafruit_hid.Keycode`
+:mod:`adafruit_hid.keycode.Keycode`
 ====================================================
 
 * Author(s): Scott Shawcroft, Dan Halbert

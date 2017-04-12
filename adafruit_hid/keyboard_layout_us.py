@@ -1,6 +1,6 @@
 # The MIT License (MIT)
 #
-# Copyright (c) 2017 Scott Shawcroft for Adafruit Industries
+# Copyright (c) 2017 Dan Halbert
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -22,15 +22,15 @@
 #
 
 """
-:mod:`adafruit_hid.USKeyboardLayout`
-====================================================
+:mod:`adafruit_hid.keyboard_layout_us.KeyboardLayoutUS`
+=======================================================
 
 * Author(s): Dan Halbert
 """
 
-from . import Keycode
+from .keycode import Keycode
 
-class USKeyboardLayout:
+class KeyboardLayoutUS:
     """Map ASCII characters to appropriate keypresses on a standard US PC keyboard.
 
     Non-ASCII characters and most control characters will raise an exception.
@@ -182,11 +182,29 @@ class USKeyboardLayout:
     )
 
     def __init__(self, keyboard):
-        """Specify the layout for the given keyboard."""
+        """Specify the layout for the given keyboard.
+
+        :param keyboard: a Keyboard object. Write characters to this keyboard when requested.
+
+        Example::
+
+            kbd = Keyboard()
+            layout = KeyboardLayoutUS(kbd)
+        """
+
         self.keyboard = keyboard
 
     def write(self, string):
-        """Type the string by pressing and releasing keys on my keyboard."""
+        """Type the string by pressing and releasing keys on my keyboard.
+
+        :param string: A string of ASCII characters.
+        :raises ValueError: if any of the characters are not ASCII or have no keycode (such as some control characters).
+
+        Example::
+
+            # Write abc followed by Enter to the keyboard
+            layout.write('abc\\n')
+        """
         for char in string:
             keycode = self._char_to_keycode(char)
             # If this is a shifted char, clear the SHIFT flag and press the SHIFT key.
@@ -197,7 +215,24 @@ class USKeyboardLayout:
             self.keyboard.release_all()
 
     def keycodes(self, char):
-        """Return a tuple of keycodes needed to type the given character."""
+        """Return a tuple of keycodes needed to type the given character.
+
+        :param char: A single ASCII character in a string.
+        :type char: str of length one.
+        :returns: tuple of Keycode keycodes.
+        :raises ValueError: if ``char`` is not ASCII or there is no keycode for it.
+
+        Examples::
+
+            # Returns (Keycode.TAB,)
+            keycodes('\t')
+            # Returns (Keycode.A,)
+            keycode('a')
+            # Returns (Keycode.SHIFT, Keycode.A)
+            keycode('A')
+            # Raises ValueError because it's a accented e and is not ASCII
+            keycode('é')
+        """
         keycode = self._char_to_keycode(char)
         if keycode & self.SHIFT_FLAG:
             return (Keycode.SHIFT, keycode & ~self.SHIFT_FLAG)
@@ -208,7 +243,8 @@ class USKeyboardLayout:
         """Return the HID keycode for the given ASCII character, with the SHIFT_FLAG possibly set.
 
         If the character requires pressing the Shift key, the SHIFT_FLAG bit is set.
-        You must clear this bit before passing the keycode in a USB report."""
+        You must clear this bit before passing the keycode in a USB report.
+        """
         char_val = ord(char)
         if char_val > 128:
             raise ValueError("Not an ASCII character.")
