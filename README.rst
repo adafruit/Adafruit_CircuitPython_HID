@@ -10,8 +10,7 @@ Introduction
     :target: https://gitter.im/adafruit/circuitpython?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge
     :alt: Gitter
 
-This driver provides USB HID related constants. In the future it will include
-helper functions and classes as well.
+This driver simulates USB HID devices. Currently keyboard and mouse are implemented.
 
 Dependencies
 =============
@@ -26,39 +25,82 @@ This is easily achieved by downloading
 Usage Example
 =============
 
-The current `keyboard` module stores key constants which make it easier to
-construct keypress reports for a keyboard device.
+The ``Keyboard`` class sends keypress reports for a USB keyboard device to the host.
+
+The ``Keycode`` class defines USB HID keycodes to send using ``Keyboard``.
 
 .. code-block:: python
 
-    import usb_hid
-    import adafruit_hid.keyboard as kbd
-    import time
+    from adafruit_hid.keyboard import Keyboard
+    from adafruit_hid.keycode import Keycode
 
-    report = bytearray(8) # Keyboard reports are always 8 bytes.
+    # Set up a keyboard device.
+    kbd = Keyboard()
 
-    # Devices are initialized earlier so find the one for the keyboard.
-    keyboard = None
-    for device in usb_hid.devices:
-        if device.usage_page is 0x1 and device.usage is 0x06:
-            keyboard = device
-            break
+    # Type control-x.
+    kbd.press(Keycode.CONTROL, Keycode.X)
+    kbd.release_all()
 
-    # The first byte of the report includes a bitfield indicating which
-    # modifiers are pressed. Their bit position is their code's difference from
-    # 0xE0.
-    report[0] |= 1 << (kbd.LEFT_SHIFT - 0xE0)
-    # Normal keys are simply their byte code in bytes 2-7. When fewer than six
-    # keys are pressed then the trailing bytes are zero.
-    report[2] = kbd.A
-    keyboard.send_report(report)
+    # Type capital 'A'.
+    kbd.press(Keycode.SHIFT, Keycode.A)
+    kbd.release_all()
 
-    time.sleep(0.1)
+    # Press and hold the shifted '1' key to get '!' (exclamation mark).
+    kbd.press(Keycode.SHIFT, Keycode.ONE)
+    # Release the ONE key and send another report.
+    kbd.release(Keycode.ONE)
+    # Press shifted '2' to get '@'.
+    kbd.press(Keycode.TWO)
+    # Release all keys.
+    kbd.release_all()
 
-    # Clear the key presses and send another report.
-    report[0] = 0
-    report[2] = 0
-    keyboard.send_report(report)
+The ``KeyboardLayoutUS`` sends ASCII characters using keypresses. It assumes
+the host is set to accept keypresses from a US keyboard.
+
+If the host is expecting a non-US keyboard, the character to key mapping provided by
+``KeyboardLayoutUS`` will not always be correct.
+Different keypresses will be needed in some cases. For instance, to type an ``'A'`` on
+a French keyboard (AZERTY instead of QWERTY), ``Keycode.Q`` should be pressed.
+
+Currently this package provides only ``KeyboardLayoutUS``. More ``KeyboardLayout``
+classes could be added to handle non-US keyboards and the different input methods provided
+by various operating systems.
+
+.. code-block:: python
+
+    from adafruit_hid.keyboard import Keyboard
+    from adafruit_hid.keyboard_layout_us import KeyboardLayoutUS
+
+    kbd = Keyboard()
+    layout = KeyboardLayoutUS(kbd)
+
+    # Type 'abc' followed by Enter (a newline).
+    layout.write('abc\n')
+
+    # Get the keycodes needed to type a '$'.
+    # The method will return (Keycode.SHIFT, Keycode.FOUR).
+    keycodes = layout.keycodes('$')
+
+The ``Mouse`` class simulates a three-button mouse with a scroll wheel.
+
+.. code-block:: python
+
+    from adafruit_hid.mouse import Mouse
+
+    m = Mouse()
+
+    # Click the left mouse button.
+    m.click(Mouse.LEFT_BUTTON)
+
+    # Move the mouse diagonally to the upper left.
+    m.move(-100, 100, 0)
+
+    # Move the mouse while holding down the left button.
+    m.press(Mouse.LEFT_BUTTON)
+    m.move(50, 20, 0)
+    m.release_all()       # or m.release(Mouse.LEFT_BUTTON)
+
+
 
 Contributing
 ============
@@ -73,4 +115,7 @@ API Reference
 .. toctree::
    :maxdepth: 2
 
-   api
+   keyboard
+   keycode
+   keyboard_layout_us
+   mouse

@@ -24,7 +24,7 @@
 `adafruit_hid`
 ====================================================
 
-TODO(description)
+This driver simulates USB HID devices. Currently keyboard and mouse are implemented.
 
-* Author(s): Scott Shawcroft
+* Author(s): Scott Shawcroft, Dan Halbert
 """
