@@ -77,7 +77,7 @@ class Mouse:
         """Release the given mouse buttons.
 
         :param buttons: a bitwise-or'd combination of ``LEFT_BUTTON``, ``MIDDLE_BUTTON``, and ``RIGHT_BUTTON``.
-       """
+        """
         self.report[0] &= ~buttons
         self.move(0, 0, 0)
 
@@ -104,31 +104,35 @@ class Mouse:
         self.press(buttons)
         self.release(buttons)
 
-    def move(self, x_distance, y_distance, wheel_turn):
+    def move(self, x=0, y=0, wheel=0):
         """Move the mouse and turn the wheel as directed.
 
-        :param x_distance: Move the mouse along the x axis. Negative is to the left, positive is to the right.
-        :param y_distance: Move the mouse along the y axis. Negative is toward the user, positive is away from the user.
-        :param wheel turn: Rotate the wheel this amount. Negative is toward the user, positive is away from the user.
+        :param x: Move the mouse along the x axis. Negative is to the left, positive is to the right.
+        :param y: Move the mouse along the y axis. Negative is upwards on the display, positive is downwards.
+        :param wheel: Rotate the wheel this amount. Negative is toward the user, positive is away from the user. The scrolling effect depends on the host.
         :raises ValueError: if any argument is not in the range -127 to 127 inclusive.
 
         Examples::
 
-            # Move 100 to the left.
+            # Move 100 to the left. Do not move up and down. Do not roll the scroll wheel.
             m.move(-100, 0, 0)
+            # Same, with keyword arguments.
+            m.move(x=-100)
 
             # Move diagonally to the upper right.
-            m.move(50, 20, 0)
+            m.move(50, 20)
+            # Same.
+            m.move(x=50, y=-20)
 
             # Roll the mouse wheel away from the user.
-            m.move(0, 0, 5)
+            m.move(wheel=1)
         """
-        if (self._distance_ok(x_distance)
-                and self._distance_ok(y_distance)
-                and self._distance_ok(wheel_turn)):
-            self.report[1] = x_distance
-            self.report[2] = y_distance
-            self.report[3] = wheel_turn
+        if (self._distance_ok(x)
+                and self._distance_ok(y)
+                and self._distance_ok(wheel)):
+            self.report[1] = x
+            self.report[2] = y
+            self.report[3] = wheel
             self.hid_mouse.send_report(self.report)
         else:
             raise ValueError('All arguments must be >= -127 and <= 127')
