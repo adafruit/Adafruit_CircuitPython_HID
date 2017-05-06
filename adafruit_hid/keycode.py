@@ -209,7 +209,7 @@ class Keycode:
     """Keypad ``\\`` and ``|`` (Non-US)"""
 
     APPLICATION = 0x65
-    """Application (104-key keyboard)"""
+    """Application. Also known as the Menu key (Windows)."""
     POWER = 0x66
     """Power (Mac)"""
     KEYPAD_EQUALS = 0x67
@@ -240,11 +240,11 @@ class Keycode:
     LEFT_ALT = 0xE2
     """Alt modifier left of the spacebar."""
     ALT = LEFT_ALT
-    """Alias for LEFT_ALT."""
+    """Alias for LEFT_ALT. Alt is also known as Option (Mac)."""
     LEFT_GUI = 0xE3
-    """GUI modifier  left of the spacebar."""
+    """GUI modifier left of the spacebar."""
     GUI = LEFT_GUI
-    """Alias for LEFT_GUI."""
+    """Alias for LEFT_GUI. GUI is also known as the Windows key, Command (Mac), or Meta."""
     RIGHT_CONTROL = 0xE4
     """Control modifier right of the spacebar."""
     RIGHT_SHIFT = 0xE5
@@ -252,7 +252,7 @@ class Keycode:
     RIGHT_ALT = 0xE6
     """Alt modifier right of the spacebar."""
     RIGHT_GUI = 0xE7
-    """GUI modifier right of the spacebar (also known as the Windows key, Option (Mac), or Meta)."""
+    """GUI modifier right of the spacebar."""
 
     @classmethod
     def modifier_bit(cls, keycode):
