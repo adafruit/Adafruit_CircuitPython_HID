@@ -46,31 +46,58 @@ class Keycode:
     """
 
     A = 0x04
+    """``a`` and ``A``"""
     B = 0x05
+    """``b`` and ``B``"""
     C = 0x06
+    """``c`` and ``C``"""
     D = 0x07
+    """``d`` and ``D``"""
     E = 0x08
+    """``e`` and ``E``"""
     F = 0x09
+    """``f`` and ``F``"""
     G = 0x0A
+    """``g`` and ``G``"""
     H = 0x0B
+    """``h`` and ``H``"""
     I = 0x0C
+    """``i`` and ``I``"""
     J = 0x0D
+    """``j`` and ``J``"""
     K = 0x0E
+    """``k`` and ``K``"""
     L = 0x0F
+    """``l`` and ``L``"""
     M = 0x10
+    """``m`` and ``M``"""
     N = 0x11
+    """``n`` and ``N``"""
     O = 0x12
+    """``o`` and ``O``"""
     P = 0x13
+    """``p`` and ``P``"""
     Q = 0x14
+    """``q`` and ``Q``"""
     R = 0x15
+    """``r`` and ``R``"""
     S = 0x16
+    """``s`` and ``S``"""
     T = 0x17
+    """``t`` and ``T``"""
     U = 0x18
+    """``u`` and ``U``"""
     V = 0x19
+    """``v`` and ``V``"""
     W = 0x1A
+    """``w`` and ``W``"""
     X = 0x1B
+    """``x`` and ``X``"""
     Y = 0x1C
+    """``y`` and ``Y``"""
     Z = 0x1D
+    """``z`` and ``Z``"""
+
     ONE = 0x1E
     """``1`` and ``!``"""
     TWO = 0x1F
@@ -102,6 +129,9 @@ class Keycode:
     TAB = 0x2B
     """Tab and Backtab"""
     SPACEBAR = 0x2C
+    """Spacebar"""
+    SPACE = SPACEBAR
+    """Alias for SPACEBAR"""
     MINUS = 0x2D
     """``-` and ``_``"""
     EQUALS = 0x2E
@@ -128,6 +158,7 @@ class Keycode:
     """``/`` and ``?``"""
 
     CAPS_LOCK = 0x39
+    """Caps Lock"""
 
     F1 = 0x3A
     """Function key F1"""
@@ -157,33 +188,44 @@ class Keycode:
     PRINT_SCREEN = 0x46
     """Print Screen (SysRq)"""
     SCROLL_LOCK = 0x47
+    """Scroll Lock"""
     PAUSE = 0x48
     """Pause (Break)"""
 
     INSERT = 0x49
+    """Insert"""
     HOME = 0x4A
+    """Home (often moves to beginning of line)"""
     PAGE_UP = 0x4B
+    """Go back one page"""
     DELETE = 0x4C
-    """Delete forward."""
+    """Delete forward"""
     END = 0x4D
+    """End (often moves to end of line)"""
     PAGE_DOWN = 0x4E
+    """Go forward one page"""
 
     RIGHT_ARROW = 0x4F
-    """Moves the cursor right."""
+    """Move the cursor right"""
     LEFT_ARROW = 0x50
-    """Moves the cursor left."""
+    """Move the cursor left"""
     DOWN_ARROW = 0x51
-    """Moves the cursor down."""
+    """Move the cursor down"""
     UP_ARROW = 0x52
-    """Moves the cursor up."""
+    """Move the cursor up"""
 
     KEYPAD_NUMLOCK = 0x53
     """Num Lock (Clear on Mac)"""
     KEYPAD_FORWARD_SLASH = 0x54
+    """Keypad ``/``"""
     KEYPAD_ASTERISK = 0x55
+    """Keypad ``*``"""
     KEYPAD_MINUS = 0x56
+    """Keyapd ``-``"""
     KEYPAD_PLUS = 0x57
+    """Keypad ``+``"""
     KEYPAD_ENTER = 0x58
+    """Keypad Enter"""
     KEYPAD_ONE = 0x59
     """Keypad ``1`` and End"""
     KEYPAD_TWO = 0x5A
@@ -193,6 +235,7 @@ class Keycode:
     KEYPAD_FOUR = 0x5C
     """Keypad ``4`` and Left Arrow"""
     KEYPAD_FIVE = 0x5D
+    """Keypad ``5``"""
     KEYPAD_SIX = 0x5E
     """Keypad ``6`` and Right Arrow"""
     KEYPAD_SEVEN = 0x5F
@@ -209,7 +252,7 @@ class Keycode:
     """Keypad ``\\`` and ``|`` (Non-US)"""
 
     APPLICATION = 0x65
-    """Application. Also known as the Menu key (Windows)."""
+    """Application: also known as the Menu key (Windows)"""
     POWER = 0x66
     """Power (Mac)"""
     KEYPAD_EQUALS = 0x67
@@ -230,29 +273,29 @@ class Keycode:
     """Function key F19 (Mac)"""
 
     LEFT_CONTROL = 0xE0
-    """Control modifier left of the spacebar."""
+    """Control modifier left of the spacebar"""
     CONTROL = LEFT_CONTROL
-    """Alias for LEFT_CONTROL."""
+    """Alias for LEFT_CONTROL"""
     LEFT_SHIFT = 0xE1
-    """Shift modifier left of the spacebar."""
+    """Shift modifier left of the spacebar"""
     SHIFT = LEFT_SHIFT
-    """Alias for LEFT_SHIFT."""
+    """Alias for LEFT_SHIFT"""
     LEFT_ALT = 0xE2
-    """Alt modifier left of the spacebar."""
+    """Alt modifier left of the spacebar"""
     ALT = LEFT_ALT
-    """Alias for LEFT_ALT. Alt is also known as Option (Mac)."""
+    """Alias for LEFT_ALT; Alt is also known as Option (Mac)"""
     LEFT_GUI = 0xE3
-    """GUI modifier left of the spacebar."""
+    """GUI modifier left of the spacebar"""
     GUI = LEFT_GUI
-    """Alias for LEFT_GUI. GUI is also known as the Windows key, Command (Mac), or Meta."""
+    """Alias for LEFT_GUI; GUI is also known as the Windows key, Command (Mac), or Meta"""
     RIGHT_CONTROL = 0xE4
-    """Control modifier right of the spacebar."""
+    """Control modifier right of the spacebar"""
     RIGHT_SHIFT = 0xE5
-    """Shift modifier right of the spacebar."""
+    """Shift modifier right of the spacebar"""
     RIGHT_ALT = 0xE6
-    """Alt modifier right of the spacebar."""
+    """Alt modifier right of the spacebar"""
     RIGHT_GUI = 0xE7
-    """GUI modifier right of the spacebar."""
+    """GUI modifier right of the spacebar"""
 
     @classmethod
     def modifier_bit(cls, keycode):
