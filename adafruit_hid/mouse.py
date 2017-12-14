@@ -43,7 +43,7 @@ class Mouse:
         """Create a Mouse object that will send USB mouse HID reports."""
         self.hid_mouse = None
         for device in usb_hid.devices:
-            if device.usage_page is 0x1 and device.usage is 0x02:
+            if device.usage_page == 0x1 and device.usage == 0x02:
                 self.hid_mouse = device
                 break
         if not self.hid_mouse:
@@ -60,7 +60,8 @@ class Mouse:
     def press(self, buttons):
         """Press the given mouse buttons.
 
-        :param buttons: a bitwise-or'd combination of ``LEFT_BUTTON``, ``MIDDLE_BUTTON``, and ``RIGHT_BUTTON``.
+        :param buttons: a bitwise-or'd combination of ``LEFT_BUTTON``,
+            ``MIDDLE_BUTTON``, and ``RIGHT_BUTTON``.
 
         Examples::
 
@@ -76,7 +77,8 @@ class Mouse:
     def release(self, buttons):
         """Release the given mouse buttons.
 
-        :param buttons: a bitwise-or'd combination of ``LEFT_BUTTON``, ``MIDDLE_BUTTON``, and ``RIGHT_BUTTON``.
+        :param buttons: a bitwise-or'd combination of ``LEFT_BUTTON``,
+            ``MIDDLE_BUTTON``, and ``RIGHT_BUTTON``.
         """
         self.report[0] &= ~buttons
         self.move(0, 0, 0)
@@ -89,7 +91,8 @@ class Mouse:
     def click(self, buttons):
         """Press and release the given mouse buttons.
 
-        :param buttons: a bitwise-or'd combination of ``LEFT_BUTTON``, ``MIDDLE_BUTTON``, and ``RIGHT_BUTTON``.
+        :param buttons: a bitwise-or'd combination of ``LEFT_BUTTON``,
+            ``MIDDLE_BUTTON``, and ``RIGHT_BUTTON``.
 
         Examples::
 
@@ -107,9 +110,12 @@ class Mouse:
     def move(self, x=0, y=0, wheel=0):
         """Move the mouse and turn the wheel as directed.
 
-        :param x: Move the mouse along the x axis. Negative is to the left, positive is to the right.
-        :param y: Move the mouse along the y axis. Negative is upwards on the display, positive is downwards.
-        :param wheel: Rotate the wheel this amount. Negative is toward the user, positive is away from the user. The scrolling effect depends on the host.
+        :param x: Move the mouse along the x axis. Negative is to the left, positive
+            is to the right.
+        :param y: Move the mouse along the y axis. Negative is upwards on the display,
+            positive is downwards.
+        :param wheel: Rotate the wheel this amount. Negative is toward the user, positive
+            is away from the user. The scrolling effect depends on the host.
         :raises ValueError: if any argument is not in the range -127 to 127 inclusive.
 
         Examples::

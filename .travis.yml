@@ -1,53 +1,30 @@
-# Travis CI configuration for automated .mpy file generation.
-# Author: Tony DiCola
-# License: Public Domain
-# This configuration will work with Travis CI (travis-ci.org) to automacially
-# build .mpy files for CircuitPython when a new tagged release is created.  This
-# file is relatively generic and can be shared across multiple repositories by
-# following these steps:
-#   1. Copy this file into a .travis.yml file in the root of the repository.
-#   2. Change the deploy > file section below to list each of the .mpy files
-#      that should be generated.  The config will automatically look for
-#      .py files with the same name as the source for generating the .mpy files.
-#      Note that the .mpy extension should be lower case!
-#   3. Commit the .travis.yml file and push it to GitHub.
-#   4. Go to travis-ci.org and find the repository (it needs to be setup to access
-#      your github account, and your github account needs access to write to the
-#      repo).  Flip the 'ON' switch on for Travis and the repo, see the Travis
-#      docs for more details: https://docs.travis-ci.com/user/getting-started/
-#   5. Get a GitHub 'personal access token' which has at least 'public_repo' or
-#      'repo' scope: https://help.github.com/articles/creating-an-access-token-for-command-line-use/
-#      Keep this token safe and secure!  Anyone with the token will be able to
-#      access and write to your GitHub repositories.  Travis will use the token
-#      to attach the .mpy files to the release.
-#   6. In the Travis CI settings for the repository that was enabled find the
-#      environment variable editing page: https://docs.travis-ci.com/user/environment-variables/#Defining-Variables-in-Repository-Settings
-#      Add an environment variable named GITHUB_TOKEN and set it to the value
-#      of the GitHub personal access token above.  Keep 'Display value in build
-#      log' flipped off.
-#   7. That's it!  Tag a release and Travis should go to work to add .mpy files
-#      to the release.  It takes about a 2-3 minutes for a worker to spin up,
-#      build mpy-cross, and add the binaries to the release.
-language: generic
+# This is a common .travis.yml for generating library release zip files for
+# CircuitPython library releases using circuitpython-build-tools.
+# See https://github.com/adafruit/circuitpython-build-tools for detailed setup
+# instructions.
 
-sudo: true
+dist: trusty
+sudo: false
+language: python
+python:
+    - "3.6"
+
+cache:
+    pip: true
 
 deploy:
   provider: releases
   api_key: $GITHUB_TOKEN
-  file:
-  - "adafruit_hid.mpy"
+  file_glob: true
+  file: bundles/*
   skip_cleanup: true
   on:
     tags: true
 
-before_install:
-- sudo apt-get -yqq update
-- sudo apt-get install -y build-essential git python python-pip
-- git clone https://github.com/adafruit/circuitpython.git
-- make -C circuitpython/mpy-cross
-- export PATH=$PATH:$PWD/circuitpython/mpy-cross/
-- sudo pip install shyaml
+install:
+  - pip install pylint circuitpython-build-tools
 
-before_deploy:
-- shyaml get-values deploy.file < .travis.yml | sed 's/.mpy/.py/' | xargs -L1 mpy-cross
+script:
+  - pylint adafruit_hid/*.py
+  - ([[ ! -d "examples" ]] || pylint --disable=missing-docstring,invalid-name examples/*.py)
+  - circuitpython-build-bundles --filename_prefix adafruit-circuitpython-hid --library_location .

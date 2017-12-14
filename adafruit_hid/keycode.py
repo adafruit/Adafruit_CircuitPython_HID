@@ -44,7 +44,7 @@ class Keycode:
     without changing the keycodes sent, so that different firmware was not needed for
     different variations of a keyboard.
     """
-
+    #pylint: disable-msg=invalid-name
     A = 0x04
     """``a`` and ``A``"""
     B = 0x05
@@ -297,10 +297,9 @@ class Keycode:
     RIGHT_GUI = 0xE7
     """GUI modifier right of the spacebar"""
 
+    #pylint: enable-msg=invalid-name
     @classmethod
     def modifier_bit(cls, keycode):
-        """Return the modifer bit to be set in an HID keycode report if this is a modifier key; otherwise return 0."""
+        """Return the modifer bit to be set in an HID keycode report if this is a
+        modifier key; otherwise return 0."""
         return 1 << (keycode - 0xE0) if cls.LEFT_CONTROL <= keycode <= cls.RIGHT_GUI else 0
-
-
-

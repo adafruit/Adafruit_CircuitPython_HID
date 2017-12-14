@@ -198,7 +198,8 @@ class KeyboardLayoutUS:
         """Type the string by pressing and releasing keys on my keyboard.
 
         :param string: A string of ASCII characters.
-        :raises ValueError: if any of the characters are not ASCII or have no keycode (such as some control characters).
+        :raises ValueError: if any of the characters are not ASCII or have no keycode
+            (such as some control characters).
 
         Example::
 
@@ -236,8 +237,8 @@ class KeyboardLayoutUS:
         keycode = self._char_to_keycode(char)
         if keycode & self.SHIFT_FLAG:
             return (Keycode.SHIFT, keycode & ~self.SHIFT_FLAG)
-        else:
-            return (keycode,)
+
+        return (keycode,)
 
     def _char_to_keycode(self, char):
         """Return the HID keycode for the given ASCII character, with the SHIFT_FLAG possibly set.

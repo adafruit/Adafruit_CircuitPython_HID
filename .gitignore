@@ -3,4 +3,6 @@ _build
 *.pyc
 .vscode
 *~
-
+.env
+build*
+bundles
