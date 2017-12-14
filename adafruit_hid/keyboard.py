@@ -43,7 +43,7 @@ class Keyboard:
         """Create a Keyboard object that will send USB keyboard HID reports."""
         self.hid_keyboard = None
         for device in usb_hid.devices:
-            if device.usage_page is 0x1 and device.usage is 0x06:
+            if device.usage_page == 0x1 and device.usage == 0x06:
                 self.hid_keyboard = device
                 break
         if not self.hid_keyboard:
