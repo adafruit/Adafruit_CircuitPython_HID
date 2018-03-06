@@ -2,7 +2,7 @@
 
 import os
 import sys
-sys.path.insert(0, os.path.abspath('.'))
+sys.path.insert(0, os.path.abspath('..'))
 
 # -- General configuration ------------------------------------------------
 
@@ -23,7 +23,7 @@ templates_path = ['_templates']
 source_suffix = '.rst'
 
 # The master toctree document.
-master_doc = 'README'
+master_doc = 'index'
 
 # General information about the project.
 project = u'Adafruit HID Library'
@@ -31,7 +31,7 @@ copyright = u'2017 Scott Shawcroft'
 author = u'Scott Shawcroft'
 
 # Ignore imports of these modules, which sphinx will not know about.
-autodoc_mock_imports = ('micropython', 'usb_hid')
+autodoc_mock_imports = ["micropython", "usb_hid"]
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -52,7 +52,7 @@ language = None
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This patterns also effect to html_static_path and html_extra_path
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '.env', 'CODE_OF_CONDUCT.md']
 
 # The reST default role (used for this markup: `text`) to use for all
 # documents.
@@ -68,6 +68,10 @@ pygments_style = 'sphinx'
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = False
+
+# If this is True, todo emits a warning for each TODO entries. The default is False.
+todo_emit_warnings = True
+
 
 
 # -- Options for HTML output ----------------------------------------------
@@ -91,7 +95,13 @@ else:
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-# html_static_path = ['_static']
+html_static_path = ['_static']
+
+# The name of an image file (relative to this directory) to use as a favicon of
+# the docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
+# pixels large.
+#
+html_favicon = '_static/favicon.ico'
 
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'AdafruitHIDLibrarydoc'
