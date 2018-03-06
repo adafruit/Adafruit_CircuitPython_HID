@@ -22,7 +22,7 @@
 #
 
 """
-:mod:`adafruit_hid.keyboard_layout_us.KeyboardLayoutUS`
+`adafruit_hid.keyboard_layout_us.KeyboardLayoutUS`
 =======================================================
 
 * Author(s): Dan Halbert

@@ -22,7 +22,7 @@
 #
 
 """
-:mod:`adafruit_hid.mouse.Mouse`
+`adafruit_hid.mouse.Mouse`
 ====================================================
 
 * Author(s): Dan Halbert
