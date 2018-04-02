@@ -36,6 +36,8 @@ class ConsumerControlCode:
 
     *New in CircuitPython 3.0.*
     """
+    #pylint: disable-msg=too-few-public-methods
+
     RECORD = 0xB2
     """Record"""
     FAST_FORWARD = 0xB3

@@ -28,7 +28,6 @@
 * Author(s): Dan Halbert
 """
 
-from micropython import const
 import usb_hid
 
 class ConsumerControl:
