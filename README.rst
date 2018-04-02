@@ -42,12 +42,17 @@ The ``Keycode`` class defines USB HID keycodes to send using ``Keyboard``.
     # Set up a keyboard device.
     kbd = Keyboard()
 
-    # Type control-x.
-    kbd.press(Keycode.CONTROL, Keycode.X)
-    kbd.release_all()
+    # Type lowercase 'a'. Presses the 'a' key and releases it.
+    kbd.send(Keycode.A)
 
     # Type capital 'A'.
-    kbd.press(Keycode.SHIFT, Keycode.A)
+    kbd.send(Keycode.SHIFT, Keycode.A)
+
+    # Type control-x.
+    kbd.send(Keycode.CONTROL, Keycode.X)
+
+    # You can also control press and release actions separately.
+    kbd.press(Keycode.CONTROL, Keycode.X)
     kbd.release_all()
 
     # Press and hold the shifted '1' key to get '!' (exclamation mark).
@@ -113,7 +118,23 @@ The ``Mouse`` class simulates a three-button mouse with a scroll wheel.
     m.move(x=50, y=20)
     m.release_all()       # or m.release(Mouse.LEFT_BUTTON)
 
+The ``ConsumerControl`` class emulates consumer control devices such as
+remote controls, or the multimedia keys on certain keyboards.
 
+*New in CircuitPython 3.0.*
+
+.. code-block:: python
+
+    from adafruit_hid.consumer_control import ConsumerControl
+    from adafruit_hid.consumer_control_code import ConsumerControlCode
+
+    cc = ConsumerControl()
+
+    # Raise volume.
+    cc.send(ConsumerCode.VOLUME_INCREMENT)
+
+    # Pause or resume playback.
+    cc.send(ConsumerCode.PLAY_PAUSE)
 
 Contributing
 ============
