@@ -19,12 +19,10 @@ search.pull = digitalio.Pull.DOWN
 while True:
     # press ALT+TAB to swap windows
     if swap.value:
-        kbd.press(Keycode.ALT, Keycode.TAB)
-        kbd.release_all()
+        kbd.send(Keycode.ALT, Keycode.TAB)
 
     # press CTRL+K, which in a web browser will open the search dialog
     elif search.value:
-        kbd.press(Keycode.CONTROL, Keycode.K)
-        kbd.release_all()
+        kbd.send(Keycode.CONTROL, Keycode.K)
 
     time.sleep(0.1)

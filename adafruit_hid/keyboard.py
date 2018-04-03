@@ -87,7 +87,7 @@ class Keyboard:
         """
         for keycode in keycodes:
             self._add_keycode_to_report(keycode)
-            self.hid_keyboard.send_report(self.report)
+        self.hid_keyboard.send_report(self.report)
 
     def release(self, *keycodes):
         """Send a USB HID report indicating that the given keys have been released.
@@ -103,13 +103,21 @@ class Keyboard:
         """
         for keycode in keycodes:
             self._remove_keycode_from_report(keycode)
-            self.hid_keyboard.send_report(self.report)
+        self.hid_keyboard.send_report(self.report)
 
     def release_all(self):
         """Release all pressed keys."""
         for i in range(8):
             self.report[i] = 0
         self.hid_keyboard.send_report(self.report)
+
+    def send(self, *keycodes):
+        """Press the given keycodes and then release all pressed keys.
+
+        :param keycodes: keycodes to send together
+        """
+        self.press(*keycodes)
+        self.release_all()
 
     def _add_keycode_to_report(self, keycode):
         """Add a single keycode to the USB HID report."""
