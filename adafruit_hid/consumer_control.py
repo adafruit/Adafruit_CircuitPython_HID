@@ -28,6 +28,7 @@
 * Author(s): Dan Halbert
 """
 
+import time
 import usb_hid
 
 class ConsumerControl:
@@ -51,6 +52,14 @@ class ConsumerControl:
 
         # View bytes as a single 16-bit number.
         self.usage_id = memoryview(self.report)[0:2]
+
+        # Do a no-op to test if HID device is ready.
+        # If not, wait a bit and try once more.
+        try:
+            self.send(0x0)
+        except OSError:
+            time.sleep(1)
+            self.send(0x0)
 
     def send(self, consumer_code):
         """Send a report to do the specified consumer control action,
