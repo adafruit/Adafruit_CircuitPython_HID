@@ -3,6 +3,10 @@ from adafruit_hid.mouse import Mouse
 import board
 import digitalio
 
+# Sleep for a bit to avoid a race condition on some systems
+# when creating a HID instance
+time.sleep(1)
+
 mouse = Mouse()
 
 # define buttons. these can be any physical switches/buttons, but the values
