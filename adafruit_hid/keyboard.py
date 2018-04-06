@@ -28,9 +28,10 @@
 * Author(s): Scott Shawcroft, Dan Halbert
 """
 
-from micropython import const
 import time
 import usb_hid
+
+from micropython import const
 
 from .keycode import Keycode
 

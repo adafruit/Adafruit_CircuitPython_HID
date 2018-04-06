@@ -155,5 +155,5 @@ class Mouse:
             wheel -= partial_wheel
 
     @staticmethod
-    def _limit(d):
-        return min(127, max(-127, d))
+    def _limit(dist):
+        return min(127, max(-127, dist))
