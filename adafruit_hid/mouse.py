@@ -27,6 +27,7 @@
 
 * Author(s): Dan Halbert
 """
+import time
 import usb_hid
 
 class Mouse:
@@ -56,6 +57,13 @@ class Mouse:
         # report[3] wheel movement
         self.report = bytearray(4)
 
+        # Do a no-op to test if HID device is ready.
+        # If not, wait a bit and try once more.
+        try:
+            self.move(0, 0, 0)
+        except OSError:
+            time.sleep(1)
+            self.move(0, 0, 0)
 
     def press(self, buttons):
         """Press the given mouse buttons.
@@ -116,7 +124,6 @@ class Mouse:
             positive is downwards.
         :param wheel: Rotate the wheel this amount. Negative is toward the user, positive
             is away from the user. The scrolling effect depends on the host.
-        :raises ValueError: if any argument is not in the range -127 to 127 inclusive.
 
         Examples::
 
@@ -133,17 +140,20 @@ class Mouse:
             # Roll the mouse wheel away from the user.
             m.move(wheel=1)
         """
-        if (self._distance_ok(x)
-                and self._distance_ok(y)
-                and self._distance_ok(wheel)):
-            self.report[1] = x
-            self.report[2] = y
-            self.report[3] = wheel
+
+        # Send multiple reports if necessary to move or scroll requested amounts.
+        while x != 0 or y != 0 or wheel != 0:
+            partial_x = self._limit(x)
+            partial_y = self._limit(y)
+            partial_wheel = self._limit(wheel)
+            self.report[1] = partial_x
+            self.report[2] = partial_y
+            self.report[3] = partial_wheel
             self.hid_mouse.send_report(self.report)
-        else:
-            raise ValueError('All arguments must be >= -127 and <= 127')
+            x -= partial_x
+            y -= partial_y
+            wheel -= partial_wheel
 
     @staticmethod
-    def _distance_ok(dist):
-        """Return True if dist is in the range [-127,127]"""
-        return -127 <= dist <= 127
+    def _limit(dist):
+        return min(127, max(-127, dist))
