@@ -30,14 +30,25 @@ This is easily achieved by downloading
 Usage Example
 =============
 
+.. note::
+
+   A "startup race" condition can occur when using HID on some systems. The use of
+   a pause (``time.sleep()``) before creating a HID instance in your code will allow
+   the host system to finish setting up the device on the USB bus.
+
 The ``Keyboard`` class sends keypress reports for a USB keyboard device to the host.
 
 The ``Keycode`` class defines USB HID keycodes to send using ``Keyboard``.
 
 .. code-block:: python
 
+    import time
     from adafruit_hid.keyboard import Keyboard
     from adafruit_hid.keycode import Keycode
+
+    # Sleep for a bit to avoid a race condition on some systems
+    # when creating a HID instance
+    time.sleep(1)
 
     # Set up a keyboard device.
     kbd = Keyboard()
@@ -78,8 +89,13 @@ by various operating systems.
 
 .. code-block:: python
 
+    import time
     from adafruit_hid.keyboard import Keyboard
     from adafruit_hid.keyboard_layout_us import KeyboardLayoutUS
+
+    # Sleep for a bit to avoid a race condition on some systems
+    # when creating a HID instance
+    time.sleep(1)
 
     kbd = Keyboard()
     layout = KeyboardLayoutUS(kbd)
@@ -95,7 +111,12 @@ The ``Mouse`` class simulates a three-button mouse with a scroll wheel.
 
 .. code-block:: python
 
+    import time
     from adafruit_hid.mouse import Mouse
+
+    # Sleep for a bit to avoid a race condition on some systems
+    # when creating a HID instance
+    time.sleep(1)
 
     m = Mouse()
 
@@ -125,8 +146,13 @@ remote controls, or the multimedia keys on certain keyboards.
 
 .. code-block:: python
 
+    import time
     from adafruit_hid.consumer_control import ConsumerControl
     from adafruit_hid.consumer_control_code import ConsumerControlCode
+
+    # Sleep for a bit to avoid a race condition on some systems
+    # when creating a HID instance
+    time.sleep(1)
 
     cc = ConsumerControl()
 

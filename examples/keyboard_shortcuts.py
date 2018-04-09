@@ -4,6 +4,10 @@ from adafruit_hid.keycode import Keycode
 import board
 import digitalio
 
+# Sleep for a bit to avoid a race condition on some systems
+# when creating a HID instance
+time.sleep(1)
+
 kbd = Keyboard()
 
 # define buttons. these can be any physical switches/buttons, but the values
