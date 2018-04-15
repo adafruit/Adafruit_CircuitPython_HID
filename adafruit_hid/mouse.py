@@ -60,10 +60,10 @@ class Mouse:
         # Do a no-op to test if HID device is ready.
         # If not, wait a bit and try once more.
         try:
-            self.move(0, 0, 0)
+            self._send_no_move()
         except OSError:
             time.sleep(1)
-            self.move(0, 0, 0)
+            self._send_no_move()
 
     def press(self, buttons):
         """Press the given mouse buttons.
@@ -80,7 +80,7 @@ class Mouse:
             m.press(Mouse.LEFT_BUTTON | Mouse.RIGHT_BUTTON)
         """
         self.report[0] |= buttons
-        self.move(0, 0, 0)
+        self._send_no_move()
 
     def release(self, buttons):
         """Release the given mouse buttons.
@@ -89,12 +89,12 @@ class Mouse:
             ``MIDDLE_BUTTON``, and ``RIGHT_BUTTON``.
         """
         self.report[0] &= ~buttons
-        self.move(0, 0, 0)
+        self._send_no_move()
 
     def release_all(self):
         """Release all the mouse buttons."""
         self.report[0] = 0
-        self.move(0, 0, 0)
+        self._send_no_move()
 
     def click(self, buttons):
         """Press and release the given mouse buttons.
@@ -111,7 +111,6 @@ class Mouse:
             m.click(Mouse.LEFT_BUTTON)
             m.click(Mouse.LEFT_BUTTON)
         """
-
         self.press(buttons)
         self.release(buttons)
 
@@ -140,7 +139,6 @@ class Mouse:
             # Roll the mouse wheel away from the user.
             m.move(wheel=1)
         """
-
         # Send multiple reports if necessary to move or scroll requested amounts.
         while x != 0 or y != 0 or wheel != 0:
             partial_x = self._limit(x)
@@ -153,6 +151,13 @@ class Mouse:
             x -= partial_x
             y -= partial_y
             wheel -= partial_wheel
+
+    def _send_no_move(self):
+        """Send a button-only report."""
+        self.report[1] = 0
+        self.report[2] = 0
+        self.report[3] = 0
+        self.hid_mouse.send_report(self.report)
 
     @staticmethod
     def _limit(dist):
