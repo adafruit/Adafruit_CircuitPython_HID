@@ -27,6 +27,8 @@
 
 * Author(s): Dan Halbert
 """
+
+import struct
 import time
 import usb_hid
 
@@ -135,7 +137,10 @@ class Gamepad:
     def reset_all(self):
         """Release all buttons and set joysticks to zero."""
         self._buttons_state = 0
-        self.set_joysticks(0, 0, 0, 0)
+        self._joy_x = 0
+        self._joy_y = 0
+        self._joy_z = 0
+        self._joy_r_z = 0
         self._send(always=True)
 
     def _send(self, always=False):
