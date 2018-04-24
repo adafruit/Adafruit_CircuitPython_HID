@@ -8,15 +8,19 @@ import adafruit_seesaw
 from adafruit_hid.gamepad import Gamepad
 from micropython import const
 
-def range_map(x, in_min, in_max, out_min, out_max):
-    return (x - in_min) * (out_max - out_min) // (in_max - in_min) + out_min
+def range_map(value, in_min, in_max, out_min, out_max):
+    return (value - in_min) * (out_max - out_min) // (in_max - in_min) + out_min
 
 BUTTON_RIGHT = const(6)
-BUTTON_DOWN  = const(7)
-BUTTON_LEFT  = const(9)
-BUTTON_UP    = const(10)
-BUTTON_SEL   = const(14)
-button_mask = const( (1 << BUTTON_RIGHT) | (1 << BUTTON_DOWN) | (1 << BUTTON_LEFT) | (1 << BUTTON_UP) | (1 << BUTTON_SEL) )
+BUTTON_DOWN = const(7)
+BUTTON_LEFT = const(9)
+BUTTON_UP = const(10)
+BUTTON_SEL = const(14)
+button_mask = const((1 << BUTTON_RIGHT) |
+                    (1 << BUTTON_DOWN) |
+                    (1 << BUTTON_LEFT) |
+                    (1 << BUTTON_UP) |
+                    (1 << BUTTON_SEL))
 
 i2c = busio.I2C(board.SCL, board.SDA)
 
