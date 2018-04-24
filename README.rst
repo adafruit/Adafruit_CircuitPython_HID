@@ -131,10 +131,10 @@ remote controls, or the multimedia keys on certain keyboards.
     cc = ConsumerControl()
 
     # Raise volume.
-    cc.send(ConsumerCode.VOLUME_INCREMENT)
+    cc.send(ConsumerControlCode.VOLUME_INCREMENT)
 
     # Pause or resume playback.
-    cc.send(ConsumerCode.PLAY_PAUSE)
+    cc.send(ConsumerControlCode.PLAY_PAUSE)
 
 Contributing
 ============

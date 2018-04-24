@@ -72,10 +72,10 @@ class ConsumerControl:
             from adafruit_hid.consumer_control_code import ConsumerControlCode
 
             # Raise volume.
-            consumer_control.send(ConsumerCode.VOLUME_INCREMENT)
+            consumer_control.send(ConsumerControlCode.VOLUME_INCREMENT)
 
             # Advance to next track (song).
-            consumer_control.send(ConsumerCode.SCAN_NEXT_TRACK)
+            consumer_control.send(ConsumerControlCode.SCAN_NEXT_TRACK)
         """
         self.usage_id[0] = consumer_code
         self.hid_consumer.send_report(self.report)
