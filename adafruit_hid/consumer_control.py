@@ -28,6 +28,11 @@
 * Author(s): Dan Halbert
 """
 
+import sys
+if sys.implementation[1][0] < 3:
+    raise ImportError('{0} is not supported in CircuitPython 2.x or lower'.format(__name__))
+
+# pylint: disable=wrong-import-position
 import time
 import usb_hid
 
