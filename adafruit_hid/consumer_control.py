@@ -82,7 +82,9 @@ class ConsumerControl:
             # Advance to next track (song).
             consumer_control.send(ConsumerControlCode.SCAN_NEXT_TRACK)
         """
-        self.usage_id[0] = consumer_code
+        self.usage_id[0] = consumer_code % 0x100
+        self.usage_id[1] = consumer_code >> 8
         self.hid_consumer.send_report(self.report)
         self.usage_id[0] = 0x0
+        self.usage_id[1] = 0x0
         self.hid_consumer.send_report(self.report)
