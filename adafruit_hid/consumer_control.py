@@ -33,6 +33,7 @@ if sys.implementation[1][0] < 3:
     raise ImportError('{0} is not supported in CircuitPython 2.x or lower'.format(__name__))
 
 # pylint: disable=wrong-import-position
+import struct
 import time
 import usb_hid
 
@@ -53,10 +54,7 @@ class ConsumerControl:
             raise IOError("Could not find an HID Consumer device.")
 
         # Reuse this bytearray to send consumer reports.
-        self.report = bytearray(2)
-
-        # View bytes as a single 16-bit number.
-        self.usage_id = memoryview(self.report)[0:2]
+        self._report = bytearray(2)
 
         # Do a no-op to test if HID device is ready.
         # If not, wait a bit and try once more.
@@ -82,7 +80,7 @@ class ConsumerControl:
             # Advance to next track (song).
             consumer_control.send(ConsumerControlCode.SCAN_NEXT_TRACK)
         """
-        self.usage_id[0] = consumer_code
-        self.hid_consumer.send_report(self.report)
-        self.usage_id[0] = 0x0
-        self.hid_consumer.send_report(self.report)
+        struct.pack_into("<H", self._report, 0, consumer_code)
+        self.hid_consumer.send_report(self._report)
+        self._report[0] = self._report[1] = 0x0
+        self.hid_consumer.send_report(self._report)
