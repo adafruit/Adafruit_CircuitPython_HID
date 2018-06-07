@@ -23,7 +23,7 @@
 
 """
 `adafruit_hid.consumer_control_code.ConsumerControlCode`
-====================================================
+========================================================
 
 * Author(s): Dan Halbert
 """
