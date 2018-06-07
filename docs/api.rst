@@ -12,3 +12,12 @@
 
 .. automodule:: adafruit_hid.mouse
    :members:
+
+.. automodule:: adafruit_hid.consumer_control
+   :members:
+
+.. automodule:: adafruit_hid.consumer_control_code
+   :members:
+
+.. automodule:: adafruit_hid.gamepad
+   :members:
