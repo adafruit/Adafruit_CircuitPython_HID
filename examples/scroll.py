@@ -1,7 +1,7 @@
 import time
-from adafruit_hid.mouse import Mouse
 import board
 import digitalio
+from adafruit_hid.mouse import Mouse
 
 mouse = Mouse()
 

@@ -29,11 +29,11 @@
 """
 
 import time
+from micropython import const
 import usb_hid
 
-from micropython import const
-
 from .keycode import Keycode
+
 
 class Keyboard:
     """Send HID keyboard reports."""

@@ -1,6 +1,6 @@
-import analogio
 import board
 import digitalio
+import analogio
 
 from adafruit_hid.gamepad import Gamepad
 

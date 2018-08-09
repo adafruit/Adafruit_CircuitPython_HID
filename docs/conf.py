@@ -31,7 +31,7 @@ copyright = u'2017 Scott Shawcroft'
 author = u'Scott Shawcroft'
 
 # Ignore imports of these modules, which sphinx will not know about.
-autodoc_mock_imports = ["micropython", "usb_hid"]
+autodoc_mock_imports = ["usb_hid"]
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the

@@ -1,8 +1,8 @@
 import time
-from adafruit_hid.keyboard import Keyboard
-from adafruit_hid.keycode import Keycode
 import board
 import digitalio
+from adafruit_hid.keyboard import Keyboard
+from adafruit_hid.keycode import Keycode
 
 kbd = Keyboard()
 
