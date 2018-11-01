@@ -284,10 +284,16 @@ class Keycode:
     """Alt modifier left of the spacebar"""
     ALT = LEFT_ALT
     """Alias for LEFT_ALT; Alt is also known as Option (Mac)"""
+    OPTION = ALT
+    """Labeled as Option on some Mac keyboards"""
     LEFT_GUI = 0xE3
     """GUI modifier left of the spacebar"""
     GUI = LEFT_GUI
     """Alias for LEFT_GUI; GUI is also known as the Windows key, Command (Mac), or Meta"""
+    WINDOWS = GUI
+    """Labeled with a Windows logo on Windows keyboards"""
+    COMMAND = GUI
+    """Labeled as Command on Mac keyboards, with a clover glyph"""
     RIGHT_CONTROL = 0xE4
     """Control modifier right of the spacebar"""
     RIGHT_SHIFT = 0xE5
