@@ -54,6 +54,8 @@ class ConsumerControlCode:
     """Eject"""
     PLAY_PAUSE = 0xCD
     """Play/Pause toggle"""
+    MUTE = 0xE2
+    """Mute"""
     VOLUME_DECREMENT = 0xEA
     """Decrease volume"""
     VOLUME_INCREMENT = 0xE9
