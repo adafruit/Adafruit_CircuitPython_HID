@@ -10,8 +10,8 @@ Introduction
     :target: https://discord.gg/nBQh6qu
     :alt: Discord
 
-.. image:: https://travis-ci.org/adafruit/Adafruit_CircuitPython_HID.svg?branch=master
-    :target: https://travis-ci.org/adafruit/Adafruit_CircuitPython_HID
+.. image:: https://travis-ci.com/adafruit/Adafruit_CircuitPython_HID.svg?branch=master
+    :target: https://travis-ci.com/adafruit/Adafruit_CircuitPython_HID
     :alt: Build Status
 
 
