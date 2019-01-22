@@ -152,7 +152,7 @@ class Gamepad:
         """Send a report with all the existing settings.
         If ``always`` is ``False`` (the default), send only if there have been changes.
         """
-        struct.pack_into('<HBBBB', self._report, 0,
+        struct.pack_into('<Hbbbb', self._report, 0,
                          self._buttons_state,
                          self._joy_x, self._joy_y,
                          self._joy_z, self._joy_r_z)
