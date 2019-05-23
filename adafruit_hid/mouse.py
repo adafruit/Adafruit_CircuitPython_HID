@@ -144,9 +144,9 @@ class Mouse:
             partial_x = self._limit(x)
             partial_y = self._limit(y)
             partial_wheel = self._limit(wheel)
-            self.report[1] = partial_x
-            self.report[2] = partial_y
-            self.report[3] = partial_wheel
+            self.report[1] = partial_x & 0xff
+            self.report[2] = partial_y & 0xff
+            self.report[3] = partial_wheel & 0xff
             self.hid_mouse.send_report(self.report)
             x -= partial_x
             y -= partial_y
