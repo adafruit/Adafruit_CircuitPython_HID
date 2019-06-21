@@ -24,7 +24,18 @@
 `adafruit_hid`
 ====================================================
 
-This driver simulates USB HID devices. Currently keyboard and mouse are implemented.
+This driver simulates USB HID devices.
 
 * Author(s): Scott Shawcroft, Dan Halbert
+
+Implementation Notes
+--------------------
+**Software and Dependencies:**
+* Adafruit CircuitPython firmware for the supported boards:
+  https://github.com/adafruit/circuitpython/releases
 """
+
+# imports
+
+__version__ = "0.0.0-auto.0"
+__repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_HID.git"
