@@ -30,26 +30,32 @@
 
 import time
 from micropython import const
-import usb_hid
 
 from .keycode import Keycode
 
+_MAX_KEYPRESSES = const(6)
 
 class Keyboard:
     """Send HID keyboard reports."""
 
     # No more than _MAX_KEYPRESSES regular keys may be pressed at once.
-    _MAX_KEYPRESSES = 6
 
-    def __init__(self):
-        """Create a Keyboard object that will send USB keyboard HID reports."""
-        self.hid_keyboard = None
-        for device in usb_hid.devices:
-            if device.usage_page == 0x1 and device.usage == 0x06:
-                self.hid_keyboard = device
-                break
-        if not self.hid_keyboard:
-            raise IOError("Could not find an HID keyboard device.")
+    def __init__(self, keyboard_device=None):
+        """Create a Keyboard object that will send keyboard HID reports.
+        If keyboard_device is None (the default), find a usb_hid device to use.
+        But an equivalent device can be supplied instead for other kinds of keyboards,
+        such as BLE.
+        It only needs to implement `send_report()`.
+        """
+        self._keyboard_device = keyboard_device
+        if not self._keyboard_device:
+            import usb_hid
+            for device in usb_hid.devices:
+                if device.usage_page == 0x1 and device.usage == 0x06:
+                    self._keyboard_device = device
+                    break
+            if not self._keyboard_device:
+                raise IOError("Could not find an HID keyboard device.")
 
         # Reuse this bytearray to send keyboard reports.
         self.report = bytearray(8)
@@ -98,7 +104,7 @@ class Keyboard:
         """
         for keycode in keycodes:
             self._add_keycode_to_report(keycode)
-        self.hid_keyboard.send_report(self.report)
+        self._keyboard_device.send_report(self.report)
 
     def release(self, *keycodes):
         """Send a USB HID report indicating that the given keys have been released.
@@ -114,13 +120,13 @@ class Keyboard:
         """
         for keycode in keycodes:
             self._remove_keycode_from_report(keycode)
-        self.hid_keyboard.send_report(self.report)
+        self._keyboard_device.send_report(self.report)
 
     def release_all(self):
         """Release all pressed keys."""
         for i in range(8):
             self.report[i] = 0
-        self.hid_keyboard.send_report(self.report)
+        self._keyboard_device.send_report(self.report)
 
     def send(self, *keycodes):
         """Press the given keycodes and then release all pressed keys.
@@ -139,12 +145,12 @@ class Keyboard:
         else:
             # Don't press twice.
             # (I'd like to use 'not in self.report_keys' here, but that's not implemented.)
-            for i in range(const(self._MAX_KEYPRESSES)):
+            for i in range(_MAX_KEYPRESSES):
                 if self.report_keys[i] == keycode:
                     # Already pressed.
                     return
             # Put keycode in first empty slot.
-            for i in range(const(self._MAX_KEYPRESSES)):
+            for i in range(_MAX_KEYPRESSES):
                 if self.report_keys[i] == 0:
                     self.report_keys[i] = keycode
                     return
@@ -159,6 +165,6 @@ class Keyboard:
             self.report_modifier[0] &= ~modifier
         else:
             # Check all the slots, just in case there's a duplicate. (There should not be.)
-            for i in range(const(self._MAX_KEYPRESSES)):
+            for i in range(_MAX_KEYPRESSES):
                 if self.report_keys[i] == keycode:
                     self.report_keys[i] = 0
