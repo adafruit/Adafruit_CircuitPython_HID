@@ -28,14 +28,8 @@
 * Author(s): Dan Halbert
 """
 
-import sys
-if sys.implementation.version[0] < 3:
-    raise ImportError('{0} is not supported in CircuitPython 2.x or lower'.format(__name__))
-
-# pylint: disable=wrong-import-position
 import struct
 import time
-import usb_hid
 
 class Gamepad:
     """Emulate a generic gamepad controller with 16 buttons,
@@ -48,15 +42,22 @@ class Gamepad:
     The joystick values are in the range -127 to 127.
 """
 
-    def __init__(self):
-        """Create a Gamepad object that will send USB gamepad HID reports."""
-        self._hid_gamepad = None
-        for device in usb_hid.devices:
-            if device.usage_page == 0x1 and device.usage == 0x05:
-                self._hid_gamepad = device
-                break
-        if not self._hid_gamepad:
-            raise IOError("Could not find an HID gampead device.")
+    def __init__(self, gamepad_device=None):
+        """Create a Gamepad object that will send USB gamepad HID reports.
+        If gamepad_device is None (the default), find a usb_hid device to use.
+        But an equivalent device can be supplied instead for other kinds of gamepads,
+        such as BLE.
+        It only needs to implement ``send_report()``.
+        """
+        self._gamepad_device = gamepad_device
+        if self._gamepad_device is None:
+            import usb_hid
+            for device in usb_hid.devices:
+                if device.usage_page == 0x1 and device.usage == 0x05:
+                    self._gamepad_device = device
+                    break
+            if not self._gamepad_device:
+                raise IOError("Could not find an HID gamepad device.")
 
         # Reuse this bytearray to send mouse reports.
         # Typically controllers start numbering buttons at 1 rather than 0.
@@ -158,7 +159,7 @@ class Gamepad:
                          self._joy_z, self._joy_r_z)
 
         if always or self._last_report != self._report:
-            self._hid_gamepad.send_report(self._report)
+            self._gamepad_device.send_report(self._report)
             # Remember what we sent, without allocating new storage.
             self._last_report[:] = self._report
 
