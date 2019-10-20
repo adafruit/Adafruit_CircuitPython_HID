@@ -35,27 +35,23 @@ if sys.implementation.version[0] < 3:
 # pylint: disable=wrong-import-position
 import struct
 import time
+import usb_hid
 
 class ConsumerControl:
     """Send ConsumerControl code reports, used by multimedia keyboards, remote controls, etc.
+
+    *New in CircuitPython 3.0.*
     """
 
-    def __init__(self, consumer_device=None):
-        """Create a ConsumerControl object that will send Consumer Control Device HID reports.
-        If consumer_device is None (the default), find a usb_hid device to use.
-        But an equivalent device can be supplied instead for other kinds of consumer devices,
-        such as BLE.
-        It only needs to implement ``send_report()``.
-        """
-        self._consumer_device = consumer_device
-        if not self._consumer_device:
-            import usb_hid
-            for device in usb_hid.devices:
-                if device.usage_page == 0x0C and device.usage == 0x01:
-                    self._consumer_device = device
-                    break
-            if not self._consumer_device:
-                raise IOError("Could not find an HID Consumer device.")
+    def __init__(self):
+        """Create a ConsumerControl object that will send Consumer Control Device HID reports."""
+        self.hid_consumer = None
+        for device in usb_hid.devices:
+            if device.usage_page == 0x0C and device.usage == 0x01:
+                self.hid_consumer = device
+                break
+        if not self.hid_consumer:
+            raise IOError("Could not find an HID Consumer device.")
 
         # Reuse this bytearray to send consumer reports.
         self._report = bytearray(2)
@@ -85,6 +81,6 @@ class ConsumerControl:
             consumer_control.send(ConsumerControlCode.SCAN_NEXT_TRACK)
         """
         struct.pack_into("<H", self._report, 0, consumer_code)
-        self._consumer_device.send_report(self._report)
+        self.hid_consumer.send_report(self._report)
         self._report[0] = self._report[1] = 0x0
-        self._consumer_device.send_report(self._report)
+        self.hid_consumer.send_report(self._report)

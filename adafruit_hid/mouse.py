@@ -28,6 +28,7 @@
 * Author(s): Dan Halbert
 """
 import time
+import usb_hid
 
 class Mouse:
     """Send USB HID mouse reports."""
@@ -39,22 +40,15 @@ class Mouse:
     MIDDLE_BUTTON = 4
     """Middle mouse button."""
 
-    def __init__(self, mouse_device=None):
-        """Create a Mouse object that will send USB mouse HID reports.
-        If mouse_device is None (the default), find a usb_hid device to use.
-        But an equivalent device can be supplied instead for other kinds of nice,
-        such as BLE.
-        It only needs to implement ``send_report()``.
-        """
-        self._mouse_device = mouse_device
-        if not self._mouse_device:
-            import usb_hid
-            for device in usb_hid.devices:
-                if device.usage_page == 0x1 and device.usage == 0x02:
-                    self._mouse_device = device
-                    break
-            if not self._mouse_device:
-                raise IOError("Could not find an HID mouse device.")
+    def __init__(self):
+        """Create a Mouse object that will send USB mouse HID reports."""
+        self.hid_mouse = None
+        for device in usb_hid.devices:
+            if device.usage_page == 0x1 and device.usage == 0x02:
+                self.hid_mouse = device
+                break
+        if not self.hid_mouse:
+            raise IOError("Could not find an HID mouse device.")
 
         # Reuse this bytearray to send mouse reports.
         # report[0] buttons pressed (LEFT, MIDDLE, RIGHT)
@@ -153,7 +147,7 @@ class Mouse:
             self.report[1] = partial_x & 0xff
             self.report[2] = partial_y & 0xff
             self.report[3] = partial_wheel & 0xff
-            self._mouse_device.send_report(self.report)
+            self.hid_mouse.send_report(self.report)
             x -= partial_x
             y -= partial_y
             wheel -= partial_wheel
@@ -163,7 +157,7 @@ class Mouse:
         self.report[1] = 0
         self.report[2] = 0
         self.report[3] = 0
-        self._mouse_device.send_report(self.report)
+        self.hid_mouse.send_report(self.report)
 
     @staticmethod
     def _limit(dist):
