@@ -31,6 +31,8 @@
 import struct
 import time
 
+from . import find_device
+
 class Gamepad:
     """Emulate a generic gamepad controller with 16 buttons,
     numbered 1-16, and two joysticks, one controlling
@@ -42,22 +44,14 @@ class Gamepad:
     The joystick values are in the range -127 to 127.
 """
 
-    def __init__(self, gamepad_device=None):
+    def __init__(self, devices):
         """Create a Gamepad object that will send USB gamepad HID reports.
-        If gamepad_device is None (the default), find a usb_hid device to use.
-        But an equivalent device can be supplied instead for other kinds of gamepads,
-        such as BLE.
-        It only needs to implement ``send_report()``.
+
+        Devices can be a list of devices that includes a gamepad device or a gamepad device
+        itself. A device is any object that implements ``send_report()``, ``usage_page`` and
+        ``usage``.
         """
-        self._gamepad_device = gamepad_device
-        if self._gamepad_device is None:
-            import usb_hid
-            for device in usb_hid.devices:
-                if device.usage_page == 0x1 and device.usage == 0x05:
-                    self._gamepad_device = device
-                    break
-            if not self._gamepad_device:
-                raise IOError("Could not find an HID gamepad device.")
+        self._gamepad_device = find_device(devices, usage_page=0x1, usage=0x05)
 
         # Reuse this bytearray to send mouse reports.
         # Typically controllers start numbering buttons at 1 rather than 0.

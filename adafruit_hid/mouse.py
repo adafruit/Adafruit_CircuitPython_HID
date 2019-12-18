@@ -29,6 +29,8 @@
 """
 import time
 
+from . import find_device
+
 class Mouse:
     """Send USB HID mouse reports."""
 
@@ -39,22 +41,14 @@ class Mouse:
     MIDDLE_BUTTON = 4
     """Middle mouse button."""
 
-    def __init__(self, mouse_device=None):
+    def __init__(self, devices):
         """Create a Mouse object that will send USB mouse HID reports.
-        If mouse_device is None (the default), find a usb_hid device to use.
-        But an equivalent device can be supplied instead for other kinds of nice,
-        such as BLE.
-        It only needs to implement ``send_report()``.
+
+        Devices can be a list of devices that includes a keyboard device or a keyboard device
+        itself. A device is any object that implements ``send_report()``, ``usage_page`` and
+        ``usage``.
         """
-        self._mouse_device = mouse_device
-        if not self._mouse_device:
-            import usb_hid
-            for device in usb_hid.devices:
-                if device.usage_page == 0x1 and device.usage == 0x02:
-                    self._mouse_device = device
-                    break
-            if not self._mouse_device:
-                raise IOError("Could not find an HID mouse device.")
+        self._mouse_device = find_device(devices, usage_page=0x1, usage=0x02)
 
         # Reuse this bytearray to send mouse reports.
         # report[0] buttons pressed (LEFT, MIDDLE, RIGHT)

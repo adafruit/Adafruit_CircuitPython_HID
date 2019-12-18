@@ -1,9 +1,10 @@
 import time
 import board
 import digitalio
+import usb_hid
 from adafruit_hid.mouse import Mouse
 
-mouse = Mouse()
+mouse = Mouse(usb_hid.devices)
 
 # define buttons. these can be any physical switches/buttons, but the values
 # here work out-of-the-box with a CircuitPlayground Express' A and B buttons.

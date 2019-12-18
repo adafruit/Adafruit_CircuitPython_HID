@@ -35,27 +35,20 @@ if sys.implementation.version[0] < 3:
 # pylint: disable=wrong-import-position
 import struct
 import time
+from . import find_device
 
 class ConsumerControl:
     """Send ConsumerControl code reports, used by multimedia keyboards, remote controls, etc.
     """
 
-    def __init__(self, consumer_device=None):
+    def __init__(self, devices):
         """Create a ConsumerControl object that will send Consumer Control Device HID reports.
-        If consumer_device is None (the default), find a usb_hid device to use.
-        But an equivalent device can be supplied instead for other kinds of consumer devices,
-        such as BLE.
-        It only needs to implement ``send_report()``.
+
+        Devices can be a list of devices that includes a Consumer Control device or a CC device
+        itself. A device is any object that implements ``send_report()``, ``usage_page`` and
+        ``usage``.
         """
-        self._consumer_device = consumer_device
-        if not self._consumer_device:
-            import usb_hid
-            for device in usb_hid.devices:
-                if device.usage_page == 0x0C and device.usage == 0x01:
-                    self._consumer_device = device
-                    break
-            if not self._consumer_device:
-                raise IOError("Could not find an HID Consumer device.")
+        self._consumer_device = find_device(devices, usage_page=0x0C, usage=0x01)
 
         # Reuse this bytearray to send consumer reports.
         self._report = bytearray(2)

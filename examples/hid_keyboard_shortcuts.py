@@ -3,8 +3,9 @@ import board
 import digitalio
 from adafruit_hid.keyboard import Keyboard
 from adafruit_hid.keycode import Keycode
+import usb_hid
 
-kbd = Keyboard()
+kbd = Keyboard(usb_hid.devices)
 
 # define buttons. these can be any physical switches/buttons, but the values
 # here work out-of-the-box with a CircuitPlayground Express' A and B buttons.

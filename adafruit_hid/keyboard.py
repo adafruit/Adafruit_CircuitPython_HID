@@ -33,6 +33,8 @@ from micropython import const
 
 from .keycode import Keycode
 
+from . import find_device
+
 _MAX_KEYPRESSES = const(6)
 
 class Keyboard:
@@ -40,22 +42,14 @@ class Keyboard:
 
     # No more than _MAX_KEYPRESSES regular keys may be pressed at once.
 
-    def __init__(self, keyboard_device=None):
+    def __init__(self, devices):
         """Create a Keyboard object that will send keyboard HID reports.
-        If keyboard_device is None (the default), find a usb_hid device to use.
-        But an equivalent device can be supplied instead for other kinds of keyboards,
-        such as BLE.
-        It only needs to implement `send_report()`.
+
+        Devices can be a list of devices that includes a keyboard device or a keyboard device
+        itself. A device is any object that implements ``send_report()``, ``usage_page`` and
+        ``usage``.
         """
-        self._keyboard_device = keyboard_device
-        if not self._keyboard_device:
-            import usb_hid
-            for device in usb_hid.devices:
-                if device.usage_page == 0x1 and device.usage == 0x06:
-                    self._keyboard_device = device
-                    break
-            if not self._keyboard_device:
-                raise IOError("Could not find an HID keyboard device.")
+        self._keyboard_device = find_device(devices, usage_page=0x1, usage=0x06)
 
         # Reuse this bytearray to send keyboard reports.
         self.report = bytearray(8)

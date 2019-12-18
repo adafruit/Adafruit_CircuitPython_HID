@@ -1,10 +1,11 @@
 import board
 import digitalio
 import analogio
+import usb_hid
 
 from adafruit_hid.gamepad import Gamepad
 
-gp = Gamepad()
+gp = Gamepad(usb_hid.devices)
 
 # Create some buttons. The physical buttons are connected
 # to ground on one side and these and these pins on the other.
