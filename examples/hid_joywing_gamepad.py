@@ -7,6 +7,7 @@ import busio
 from micropython import const
 import adafruit_seesaw
 from adafruit_hid.gamepad import Gamepad
+import usb_hid
 
 def range_map(value, in_min, in_max, out_min, out_max):
     return (value - in_min) * (out_max - out_min) // (in_max - in_min) + out_min
@@ -31,7 +32,7 @@ ss.pin_mode_bulk(button_mask, ss.INPUT_PULLUP)
 last_game_x = 0
 last_game_y = 0
 
-g = Gamepad()
+g = Gamepad(usb_hid.devices)
 
 while True:
     x = ss.analog_read(2)

@@ -28,14 +28,10 @@
 * Author(s): Dan Halbert
 """
 
-import sys
-if sys.implementation.version[0] < 3:
-    raise ImportError('{0} is not supported in CircuitPython 2.x or lower'.format(__name__))
-
-# pylint: disable=wrong-import-position
 import struct
 import time
-import usb_hid
+
+from . import find_device
 
 class Gamepad:
     """Emulate a generic gamepad controller with 16 buttons,
@@ -48,15 +44,14 @@ class Gamepad:
     The joystick values are in the range -127 to 127.
 """
 
-    def __init__(self):
-        """Create a Gamepad object that will send USB gamepad HID reports."""
-        self._hid_gamepad = None
-        for device in usb_hid.devices:
-            if device.usage_page == 0x1 and device.usage == 0x05:
-                self._hid_gamepad = device
-                break
-        if not self._hid_gamepad:
-            raise IOError("Could not find an HID gampead device.")
+    def __init__(self, devices):
+        """Create a Gamepad object that will send USB gamepad HID reports.
+
+        Devices can be a list of devices that includes a gamepad device or a gamepad device
+        itself. A device is any object that implements ``send_report()``, ``usage_page`` and
+        ``usage``.
+        """
+        self._gamepad_device = find_device(devices, usage_page=0x1, usage=0x05)
 
         # Reuse this bytearray to send mouse reports.
         # Typically controllers start numbering buttons at 1 rather than 0.
@@ -158,7 +153,7 @@ class Gamepad:
                          self._joy_z, self._joy_r_z)
 
         if always or self._last_report != self._report:
-            self._hid_gamepad.send_report(self._report)
+            self._gamepad_device.send_report(self._report)
             # Remember what we sent, without allocating new storage.
             self._last_report[:] = self._report
 
