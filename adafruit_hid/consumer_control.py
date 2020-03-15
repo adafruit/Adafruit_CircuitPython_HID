@@ -29,13 +29,17 @@
 """
 
 import sys
+
 if sys.implementation.version[0] < 3:
-    raise ImportError('{0} is not supported in CircuitPython 2.x or lower'.format(__name__))
+    raise ImportError(
+        "{0} is not supported in CircuitPython 2.x or lower".format(__name__)
+    )
 
 # pylint: disable=wrong-import-position
 import struct
 import time
 from . import find_device
+
 
 class ConsumerControl:
     """Send ConsumerControl code reports, used by multimedia keyboards, remote controls, etc.
