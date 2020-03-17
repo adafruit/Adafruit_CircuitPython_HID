@@ -37,6 +37,7 @@ from . import find_device
 
 _MAX_KEYPRESSES = const(6)
 
+
 class Keyboard:
     """Send HID keyboard reports."""
 
@@ -72,7 +73,6 @@ class Keyboard:
         except OSError:
             time.sleep(1)
             self.release_all()
-
 
     def press(self, *keycodes):
         """Send a report indicating that the given keys have been pressed.

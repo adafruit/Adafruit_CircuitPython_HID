@@ -29,18 +29,21 @@ ay = analogio.AnalogIn(board.A5)
 def range_map(x, in_min, in_max, out_min, out_max):
     return (x - in_min) * (out_max - out_min) // (in_max - in_min) + out_min
 
+
 while True:
     # Buttons are grounded when pressed (.value = False).
     for i, button in enumerate(buttons):
         gamepad_button_num = gamepad_buttons[i]
         if button.value:
             gp.release_buttons(gamepad_button_num)
-            print(" release", gamepad_button_num, end='')
+            print(" release", gamepad_button_num, end="")
         else:
             gp.press_buttons(gamepad_button_num)
-            print(" press", gamepad_button_num, end='')
+            print(" press", gamepad_button_num, end="")
 
     # Convert range[0, 65535] to -127 to 127
-    gp.move_joysticks(x=range_map(ax.value, 0, 65535, -127, 127),
-                      y=range_map(ay.value, 0, 65535, -127, 127))
+    gp.move_joysticks(
+        x=range_map(ax.value, 0, 65535, -127, 127),
+        y=range_map(ay.value, 0, 65535, -127, 127),
+    )
     print(" x", ax.value, "y", ay.value)

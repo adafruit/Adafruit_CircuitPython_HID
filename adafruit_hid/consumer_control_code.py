@@ -28,6 +28,7 @@
 * Author(s): Dan Halbert
 """
 
+
 class ConsumerControlCode:
     """USB HID Consumer Control Device constants.
 
@@ -36,7 +37,8 @@ class ConsumerControlCode:
 
     *New in CircuitPython 3.0.*
     """
-    #pylint: disable-msg=too-few-public-methods
+
+    # pylint: disable-msg=too-few-public-methods
 
     RECORD = 0xB2
     """Record"""

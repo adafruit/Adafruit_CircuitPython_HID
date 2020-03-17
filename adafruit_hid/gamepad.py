@@ -33,6 +33,7 @@ import time
 
 from . import find_device
 
+
 class Gamepad:
     """Emulate a generic gamepad controller with 16 buttons,
     numbered 1-16, and two joysticks, one controlling
@@ -147,10 +148,16 @@ class Gamepad:
         """Send a report with all the existing settings.
         If ``always`` is ``False`` (the default), send only if there have been changes.
         """
-        struct.pack_into('<Hbbbb', self._report, 0,
-                         self._buttons_state,
-                         self._joy_x, self._joy_y,
-                         self._joy_z, self._joy_r_z)
+        struct.pack_into(
+            "<Hbbbb",
+            self._report,
+            0,
+            self._buttons_state,
+            self._joy_x,
+            self._joy_y,
+            self._joy_z,
+            self._joy_r_z,
+        )
 
         if always or self._last_report != self._report:
             self._gamepad_device.send_report(self._report)

@@ -9,19 +9,23 @@ import adafruit_seesaw
 from adafruit_hid.gamepad import Gamepad
 import usb_hid
 
+
 def range_map(value, in_min, in_max, out_min, out_max):
     return (value - in_min) * (out_max - out_min) // (in_max - in_min) + out_min
+
 
 BUTTON_RIGHT = const(6)
 BUTTON_DOWN = const(7)
 BUTTON_LEFT = const(9)
 BUTTON_UP = const(10)
 BUTTON_SEL = const(14)
-button_mask = const((1 << BUTTON_RIGHT) |
-                    (1 << BUTTON_DOWN) |
-                    (1 << BUTTON_LEFT) |
-                    (1 << BUTTON_UP) |
-                    (1 << BUTTON_SEL))
+button_mask = const(
+    (1 << BUTTON_RIGHT)
+    | (1 << BUTTON_DOWN)
+    | (1 << BUTTON_LEFT)
+    | (1 << BUTTON_UP)
+    | (1 << BUTTON_SEL)
+)
 
 i2c = busio.I2C(board.SCL, board.SDA)
 
@@ -51,12 +55,12 @@ while True:
     for i, button in enumerate(buttons):
         buttons = ss.digital_read_bulk(button_mask)
         if not (buttons & (1 << button) and not button_state[i]):
-            g.press_buttons(i+1)
-            print("Press", i+1)
+            g.press_buttons(i + 1)
+            print("Press", i + 1)
             button_state[i] = True
         elif button_state[i]:
-            g.release_buttons(i+1)
-            print("Release", i+1)
+            g.release_buttons(i + 1)
+            print("Release", i + 1)
             button_state[i] = False
 
-    time.sleep(.01)
+    time.sleep(0.01)
