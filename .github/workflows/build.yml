@@ -43,6 +43,9 @@ jobs:
         pip install --force-reinstall pylint black==19.10b0 Sphinx sphinx-rtd-theme
     - name: Library version
       run: git describe --dirty --always --tags
+    - name: Check formatting
+      run: |
+        black --check --target-version=py35 .
     - name: PyLint
       run: |
         pylint $( find . -path './adafruit*.py' )
