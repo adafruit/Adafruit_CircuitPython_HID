@@ -36,11 +36,12 @@ The ``Keycode`` class defines USB HID keycodes to send using ``Keyboard``.
 
 .. code-block:: python
 
+    import usb_hid
     from adafruit_hid.keyboard import Keyboard
     from adafruit_hid.keycode import Keycode
 
     # Set up a keyboard device.
-    kbd = Keyboard()
+    kbd = Keyboard(usb_hid.devices)
 
     # Type lowercase 'a'. Presses the 'a' key and releases it.
     kbd.send(Keycode.A)
@@ -78,10 +79,11 @@ by various operating systems.
 
 .. code-block:: python
 
+    import usb_hid
     from adafruit_hid.keyboard import Keyboard
     from adafruit_hid.keyboard_layout_us import KeyboardLayoutUS
 
-    kbd = Keyboard()
+    kbd = Keyboard(usb_hid.devices)
     layout = KeyboardLayoutUS(kbd)
 
     # Type 'abc' followed by Enter (a newline).
@@ -95,9 +97,10 @@ The ``Mouse`` class simulates a three-button mouse with a scroll wheel.
 
 .. code-block:: python
 
+    import usb_hid
     from adafruit_hid.mouse import Mouse
 
-    m = Mouse()
+    m = Mouse(usb_hid.devices)
 
     # Click the left mouse button.
     m.click(Mouse.LEFT_BUTTON)
@@ -125,10 +128,11 @@ remote controls, or the multimedia keys on certain keyboards.
 
 .. code-block:: python
 
+    import usb_hid
     from adafruit_hid.consumer_control import ConsumerControl
     from adafruit_hid.consumer_control_code import ConsumerControlCode
 
-    cc = ConsumerControl()
+    cc = ConsumerControl(usb_hid.devices)
 
     # Raise volume.
     cc.send(ConsumerControlCode.VOLUME_INCREMENT)
@@ -142,9 +146,10 @@ The ``Gamepad`` class emulates a two-joystick gamepad with 16 buttons.
 
 .. code-block:: python
 
+    import usb_hid
     from adafruit_hid.gamepad import Gamepad
 
-    gp = Gamepad()
+    gp = Gamepad(usb_hid.devices)
 
     # Click gamepad buttons.
     gp.click_buttons(1, 7)
