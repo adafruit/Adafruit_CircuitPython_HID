@@ -189,7 +189,7 @@ class KeyboardLayoutUS:
 
         Example::
 
-            kbd = Keyboard()
+            kbd = Keyboard(usb_hid.devices)
             layout = KeyboardLayoutUS(kbd)
         """
 
