@@ -18,11 +18,10 @@
 # AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-# THE SOFTWARE.
+# THE SOFTWARE
 #
-
 """
-`adafruit_hid.keyboard_layout_us.KeyboardLayoutUS`
+`adafruit_hid.keyboard_layout_fr.KeyboardLayoutFR`
 =======================================================
 
 * Author(s): Dan Halbert
@@ -31,8 +30,8 @@
 from .keycode import Keycode
 
 
-class KeyboardLayoutUS:
-    """Map ASCII characters to appropriate keypresses on a standard US PC keyboard.
+class KeyboardLayoutFR:
+    """Map ASCII characters to appropriate keypresses on a standard FR PC keyboard.
 
     Non-ASCII characters and most control characters will raise an exception.
     """
@@ -50,7 +49,10 @@ class KeyboardLayoutUS:
     # if it's in a .mpy file, so it doesn't use up valuable RAM.
     #
     # \x00 entries have no keyboard key and so won't be sent.
+    # FR Layout Based on https://github.com/matthgyver/Arduino-Keyboard-FR/blob/master/KeyboardFR/src/KeyboardFR.cpp
     SHIFT_FLAG = 0x80
+    ALTGR_FLAG = 0xC0
+
     ASCII_TO_KEYCODE = (
         b"\x00"  # NUL
         b"\x00"  # SOH
@@ -85,39 +87,39 @@ class KeyboardLayoutUS:
         b"\x00"  # RS
         b"\x00"  # US
         b"\x2c"  # SPACE
-        b"\x9e"  # ! x1e|SHIFT_FLAG (shift 1)
-        b"\xb4"  # " x34|SHIFT_FLAG (shift ')
-        b"\xa0"  # # x20|SHIFT_FLAG (shift 3)
-        b"\xa1"  # $ x21|SHIFT_FLAG (shift 4)
-        b"\xa2"  # % x22|SHIFT_FLAG (shift 5)
-        b"\xa4"  # & x24|SHIFT_FLAG (shift 7)
-        b"\x34"  # '
-        b"\xa6"  # ( x26|SHIFT_FLAG (shift 9)
-        b"\xa7"  # ) x27|SHIFT_FLAG (shift 0)
-        b"\xa5"  # * x25|SHIFT_FLAG (shift 8)
+        b"\x38"  # ! x1e|SHIFT_FLAG (shift 1)
+        b"\x20"  # " x34|SHIFT_FLAG (shift ')
+        b"\xe0"  # # x20|SHIFT_FLAG (shift 3)
+        b"\x30"  # $ x21|SHIFT_FLAG (shift 4)
+        b"\xb4"  # % x22|SHIFT_FLAG (shift 5)
+        b"\x1e"  # & x24|SHIFT_FLAG (shift 7)
+        b"\x21"  # '
+        b"\x22"  # ( x26|SHIFT_FLAG (shift 9)
+        b"\x2d"  # ) x27|SHIFT_FLAG (shift 0)
+        b"\x31"  # * x25|SHIFT_FLAG (shift 8)
         b"\xae"  # + x2e|SHIFT_FLAG (shift =)
-        b"\x36"  # ,
-        b"\x2d"  # -
-        b"\x37"  # .
-        b"\x38"  # /
-        b"\x27"  # 0
-        b"\x1e"  # 1
-        b"\x1f"  # 2
-        b"\x20"  # 3
-        b"\x21"  # 4
-        b"\x22"  # 5
-        b"\x23"  # 6
-        b"\x24"  # 7
-        b"\x25"  # 8
-        b"\x26"  # 9
-        b"\xb3"  # : x33|SHIFT_FLAG (shift ;)
-        b"\x33"  # ;
-        b"\xb6"  # < x36|SHIFT_FLAG (shift ,)
+        b"\x10"  # ,
+        b"\x23"  # -
+        b"\xb6"  # .
+        b"\xb7"  # /
+        b"\xa7"  # 0
+        b"\x9e"  # 1
+        b"\x9f"  # 2
+        b"\xa0"  # 3
+        b"\xa1"  # 4
+        b"\xa2"  # 5
+        b"\xa3"  # 6
+        b"\xa4"  # 7
+        b"\xa5"  # 8
+        b"\xa6"  # 9
+        b"\x37"  # : x33|SHIFT_FLAG (shift ;)
+        b"\x36"  # ;
+        b"\x64"  # < x36|SHIFT_FLAG (shift ,)
         b"\x2e"  # =
-        b"\xb7"  # > x37|SHIFT_FLAG (shift .)
-        b"\xb8"  # ? x38|SHIFT_FLAG (shift /)
-        b"\x9f"  # @ x1f|SHIFT_FLAG (shift 2)
-        b"\x84"  # A x04|SHIFT_FLAG (shift a)
+        b"\x03"  # > x37|SHIFT_FLAG (shift .)
+        b"\x90"  # ? x38|SHIFT_FLAG (shift /)
+        b"\xe7"  # @ x1f|SHIFT_FLAG (shift 2)
+        b"\x94"  # A x04|SHIFT_FLAG (shift a)
         b"\x85"  # B x05|SHIFT_FLAG (etc.)
         b"\x86"  # C x06|SHIFT_FLAG
         b"\x87"  # D x07|SHIFT_FLAG
@@ -129,27 +131,27 @@ class KeyboardLayoutUS:
         b"\x8d"  # J x0d|SHIFT_FLAG
         b"\x8e"  # K x0e|SHIFT_FLAG
         b"\x8f"  # L x0f|SHIFT_FLAG
-        b"\x90"  # M x10|SHIFT_FLAG
+        b"\xb3"  # M x10|SHIFT_FLAG
         b"\x91"  # N x11|SHIFT_FLAG
         b"\x92"  # O x12|SHIFT_FLAG
         b"\x93"  # P x13|SHIFT_FLAG
-        b"\x94"  # Q x14|SHIFT_FLAG
+        b"\x84"  # Q x14|SHIFT_FLAG
         b"\x95"  # R x15|SHIFT_FLAG
         b"\x96"  # S x16|SHIFT_FLAG
         b"\x97"  # T x17|SHIFT_FLAG
         b"\x98"  # U x18|SHIFT_FLAG
         b"\x99"  # V x19|SHIFT_FLAG
-        b"\x9a"  # W x1a|SHIFT_FLAG
+        b"\x9d"  # W x1a|SHIFT_FLAG
         b"\x9b"  # X x1b|SHIFT_FLAG
         b"\x9c"  # Y x1c|SHIFT_FLAG
-        b"\x9d"  # Z x1d|SHIFT_FLAG
-        b"\x2f"  # [
-        b"\x31"  # \ backslash
-        b"\x30"  # ]
-        b"\xa3"  # ^ x23|SHIFT_FLAG (shift 6)
-        b"\xad"  # _ x2d|SHIFT_FLAG (shift -)
-        b"\x35"  # `
-        b"\x04"  # a
+        b"\x9a"  # Z x1d|SHIFT_FLAG
+        b"\xe2"  # [
+        b"\xe5"  # \ backslash
+        b"\xed"  # ]
+        b"\xe6"  # ^ x23|SHIFT_FLAG (shift 6)
+        b"\x25"  # _ x2d|SHIFT_FLAG (shift -)
+        b"\xe4"  # `
+        b"\x14"  # a
         b"\x05"  # b
         b"\x06"  # c
         b"\x07"  # d
@@ -161,24 +163,24 @@ class KeyboardLayoutUS:
         b"\x0d"  # j
         b"\x0e"  # k
         b"\x0f"  # l
-        b"\x10"  # m
+        b"\x33"  # m
         b"\x11"  # n
         b"\x12"  # o
         b"\x13"  # p
-        b"\x14"  # q
+        b"\x04"  # q
         b"\x15"  # r
         b"\x16"  # s
         b"\x17"  # t
         b"\x18"  # u
         b"\x19"  # v
-        b"\x1a"  # w
+        b"\x1d"  # w
         b"\x1b"  # x
         b"\x1c"  # y
-        b"\x1d"  # z
-        b"\xaf"  # { x2f|SHIFT_FLAG (shift [)
-        b"\xb1"  # | x31|SHIFT_FLAG (shift \)
-        b"\xb0"  # } x30|SHIFT_FLAG (shift ])
-        b"\xb5"  # ~ x35|SHIFT_FLAG (shift `)
+        b"\x1a"  # z
+        b"\xe1"  # { x2f|SHIFT_FLAG (shift [)
+        b"\xe3"  # | x31|SHIFT_FLAG (shift \)
+        b"\xee"  # } x30|SHIFT_FLAG (shift ])
+        b"\xdf"  # ~ x35|SHIFT_FLAG (shift `)
         b"\x4c"  # DEL DELETE (called Forward Delete in usb.org document)
     )
 
@@ -209,10 +211,18 @@ class KeyboardLayoutUS:
         """
         for char in string:
             keycode = self._char_to_keycode(char)
-            # If this is a shifted char, clear the SHIFT flag and press the SHIFT key.
-            if keycode & self.SHIFT_FLAG:
-                keycode &= ~self.SHIFT_FLAG
+            # If this is a shifted /altgr char, clear the SHIFT/ALTGR flag and press the SHIFT/ALTGR key.
+            if keycode == 0x03:
                 self.keyboard.press(Keycode.SHIFT)
+                self.keyboard.press(0x64)
+            elif keycode & self.ALTGR_FLAG == 192:
+                keycode &= ~self.ALTGR_FLAG
+                self.keyboard.press(Keycode.RIGHT_ALT)
+
+            elif keycode & self.SHIFT_FLAG == 128:
+               keycode &= ~self.SHIFT_FLAG
+               self.keyboard.press(Keycode.SHIFT)
+
             self.keyboard.press(keycode)
             self.keyboard.release_all()
 
@@ -236,8 +246,10 @@ class KeyboardLayoutUS:
             keycode('é')
         """
         keycode = self._char_to_keycode(char)
-        if keycode & self.SHIFT_FLAG:
+        if keycode & self.SHIFT_FLAG == 128:
             return (Keycode.SHIFT, keycode & ~self.SHIFT_FLAG)
+        if keycode & self.ALTGR_FLAG == 192:
+            return (Keycode.ALTGR, keycode & ~self.ALTGR_FLAG)
 
         return (keycode,)
 
@@ -247,10 +259,29 @@ class KeyboardLayoutUS:
         If the character requires pressing the Shift key, the SHIFT_FLAG bit is set.
         You must clear this bit before passing the keycode in a USB report.
         """
+        keycode = -1
         char_val = ord(char)
         if char_val > 128:
-            raise ValueError("Not an ASCII character.")
-        keycode = self.ASCII_TO_KEYCODE[char_val]
+            if char_val == 224: # à
+                keycode = 0x27
+            elif char_val == 231: # ç
+                keycode = 0x26
+            elif char_val == 232: # è
+                keycode = 0x24
+            elif char_val == 233: # é
+                keycode = 0x1f
+            elif char_val == 249: # ù
+                keycode = 0x34
+            elif char_val == 8364: # €
+                keycode = 0xc8
+            elif char_val == 176: # °
+                keycode = 0xad
+            else:
+                raise ValueError("Not an ASCII character.")
+
+        if keycode == -1:
+            keycode = self.ASCII_TO_KEYCODE[char_val]
+
         if keycode == 0:
             raise ValueError("No keycode available for character.")
         return keycode
