@@ -33,7 +33,7 @@ class ConsumerControlCode:
     """USB HID Consumer Control Device constants.
 
     This list includes a few common consumer control codes from
-    http://www.usb.org/developers/hidpage/Hut1_12v2.pdf#page=75.
+    https://www.usb.org/sites/default/files/hut1_21_0.pdf#page=118.
 
     *New in CircuitPython 3.0.*
     """
