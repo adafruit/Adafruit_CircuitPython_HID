@@ -14,9 +14,7 @@ class ConsumerControlCode:
     """USB HID Consumer Control Device constants.
 
     This list includes a few common consumer control codes from
-    http://www.usb.org/developers/hidpage/Hut1_12v2.pdf#page=75.
-
-    *New in CircuitPython 3.0.*
+    https://www.usb.org/sites/default/files/hut1_21_0.pdf#page=118.
     """
 
     # pylint: disable-msg=too-few-public-methods
