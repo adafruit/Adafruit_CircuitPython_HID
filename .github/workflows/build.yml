@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2017 Scott Shawcroft, written for Adafruit Industries
+#
+# SPDX-License-Identifier: MIT
+
 name: Build CI
 
 on: [pull_request, push]
@@ -38,20 +42,36 @@ jobs:
       # (e.g. - apt-get: gettext, etc; pip: circuitpython-build-tools, requirements.txt; etc.)
       run: |
         source actions-ci/install.sh
-    - name: Pip install pylint, black, & Sphinx
+    - name: Pip install pylint, Sphinx, pre-commit
       run: |
-        pip install --force-reinstall pylint black==19.10b0 Sphinx sphinx-rtd-theme
+        pip install --force-reinstall pylint Sphinx sphinx-rtd-theme pre-commit
     - name: Library version
       run: git describe --dirty --always --tags
-    - name: Check formatting
+    - name: Pre-commit hooks
       run: |
-        black --check --target-version=py35 .
+        pre-commit run --all-files
     - name: PyLint
       run: |
         pylint $( find . -path './adafruit*.py' )
         ([[ ! -d "examples" ]] || pylint --disable=missing-docstring,invalid-name,bad-whitespace $( find . -path "./examples/*.py" ))
     - name: Build assets
       run: circuitpython-build-bundles --filename_prefix ${{ steps.repo-name.outputs.repo-name }} --library_location .
+    - name: Archive bundles
+      uses: actions/upload-artifact@v2
+      with:
+        name: bundles
+        path: ${{ github.workspace }}/bundles/
     - name: Build docs
       working-directory: docs
       run: sphinx-build -E -W -b html . _build/html
+    - name: Check For setup.py
+      id: need-pypi
+      run: |
+        echo ::set-output name=setup-py::$( find . -wholename './setup.py' )
+    - name: Build Python package
+      if: contains(steps.need-pypi.outputs.setup-py, 'setup.py')
+      run: |
+        pip install --upgrade setuptools wheel twine readme_renderer testresources
+        python setup.py sdist
+        python setup.py bdist_wheel --universal
+        twine check dist/*

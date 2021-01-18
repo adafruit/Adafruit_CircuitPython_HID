@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2021 ladyada for Adafruit Industries
+# SPDX-License-Identifier: MIT
+
 # Use Joy FeatherWing to drive Gamepad.
 
 import time
@@ -6,8 +9,8 @@ import board
 import busio
 from micropython import const
 import adafruit_seesaw
-from adafruit_hid.gamepad import Gamepad
 import usb_hid
+from adafruit_hid.gamepad import Gamepad
 
 
 def range_map(value, in_min, in_max, out_min, out_max):
