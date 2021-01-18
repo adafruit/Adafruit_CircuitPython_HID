@@ -15,8 +15,6 @@ class ConsumerControlCode:
 
     This list includes a few common consumer control codes from
     https://www.usb.org/sites/default/files/hut1_21_0.pdf#page=118.
-
-    *New in CircuitPython 3.0.*
     """
 
     # pylint: disable-msg=too-few-public-methods

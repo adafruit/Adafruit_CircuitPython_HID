@@ -14,7 +14,7 @@ class Keycode:
     """USB HID Keycode constants.
 
     This list is modeled after the names for USB keycodes defined in
-    https://www.usb.org/sites/default/files/documents/hut1_12v2.pdf#page=53.
+    https://usb.org/sites/default/files/hut1_21_0.pdf#page=83.
     This list does not include every single code, but does include all the keys on
     a regular PC or Mac keyboard.
 
