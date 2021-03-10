@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2020, Bitboy85
+#
 # SPDX-License-Identifier: MIT
 """
 `adafruit_hid.en_us`
@@ -9,6 +11,8 @@
 
 * Author(s): Bitboy85
 """
+#pylint: disable=duplicate-code
+
 
 from keycode import Keycode
 
