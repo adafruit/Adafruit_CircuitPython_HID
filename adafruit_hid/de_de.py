@@ -1,8 +1,16 @@
+# SPDX-License-Identifier: MIT
+
+"""
+`adafruit_hid.de_de`
+=======================================================
 # The index of the array represents the 8-bit ascii code.
 # The tupple of each index represents the keys needed to be pressed for this ascii character
 # For example: on german layouts @ is written by ALT_R(AltGr) + q
-# keycodes of 0x00 are ignored, those represent non-printable characters or characters which cannot be entered by key combination
-# Ascii table from: https://www.torsten-horn.de/techdocs/ascii.htm
+# keycodes of 0x00 are ignored, those represent non-printable chars or characters which cannot be entered by key combination
+
+* Author(s): Bitboy85
+"""
+
 
 
 from keycode import Keycode
