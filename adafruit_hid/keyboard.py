@@ -59,14 +59,14 @@ class Keyboard:
         self._layout = "en_us"
         self._asciimap = __import__(self._layout)
 
-    def setLayout(self, layout):
+    def set_layout(self, layout):
         """Sets the layout of the keyboard object. The string must match
            the name of the mapping file.
         """        
         self._asciimap = __import__(layout)
         self._layout = layout
 
-    def getLayout(self):
+    def get_layout(self):
         """Returns the selected layout as string
         """   
         return self._layout
