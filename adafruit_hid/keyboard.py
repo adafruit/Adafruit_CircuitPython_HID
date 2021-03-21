@@ -22,6 +22,11 @@ _MAX_KEYPRESSES = const(6)
 class Keyboard:
     """Send HID keyboard reports."""
 
+    LED_NUM_LOCK = 0x01
+    LED_CAPS_LOCK = 0x02
+    LED_SCROLL_LOCK = 0x04
+    LED_COMPOSE = 0x08
+
     # No more than _MAX_KEYPRESSES regular keys may be pressed at once.
 
     def __init__(self, devices):
@@ -143,3 +148,12 @@ class Keyboard:
             for i in range(_MAX_KEYPRESSES):
                 if self.report_keys[i] == keycode:
                     self.report_keys[i] = 0
+
+    @property
+    def led_status(self):
+        """Returns the last received report"""
+        return self._keyboard_device.last_received_report
+
+    def led_on(self, led_code):
+        """Returns whether an LED is on based on the led code"""
+        return bool(self.led_status[0] & led_code)
