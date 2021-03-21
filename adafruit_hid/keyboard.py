@@ -23,9 +23,13 @@ class Keyboard:
     """Send HID keyboard reports."""
 
     LED_NUM_LOCK = 0x01
+    """LED Usage ID for Num Lock"""
     LED_CAPS_LOCK = 0x02
+    """LED Usage ID for Caps Lock"""
     LED_SCROLL_LOCK = 0x04
+    """LED Usage ID for Scroll Lock"""
     LED_COMPOSE = 0x08
+    """LED Usage ID for Compose"""
 
     # No more than _MAX_KEYPRESSES regular keys may be pressed at once.
 
@@ -155,5 +159,22 @@ class Keyboard:
         return self._keyboard_device.last_received_report
 
     def led_on(self, led_code):
-        """Returns whether an LED is on based on the led code"""
+        """Returns whether an LED is on based on the led code
+
+        Examples::
+
+            import usb_hid
+            from adafruit_hid.keyboard import Keyboard
+            from adafruit_hid.keycode import Keycode
+            import time
+
+            # Press and release CapsLock.
+            kbd.press(Keycode.CAPS_LOCK)
+            time.sleep(.09)
+            kbd.release(Keycode.CAPS_LOCK)
+
+            # Check status of the LED_CAPS_LOCK
+            print(kbd.led_on(Keyboard.LED_CAPS_LOCK))
+
+        """
         return bool(self.led_status[0] & led_code)
