@@ -17,6 +17,7 @@ class KeyboardLayout:
 
     Non-ASCII characters and most control characters will raise an exception.
     """
+
     # We use the top bit of each byte (0x80) to indicate
     # that the shift key should be pressed, and an extra 9th bit 0x100 for AltGr
     SHIFT_FLAG = 0x80

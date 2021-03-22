@@ -22,8 +22,8 @@ ignore-patterns=
 #init-hook=
 
 # Use multiple processes to speed up Pylint.
-# jobs=1
-jobs=2
+jobs=1
+# jobs=2
 
 # List of plugins (as comma separated values of python modules names) to load,
 # usually to register additional checkers.
@@ -253,7 +253,7 @@ ignore-docstrings=yes
 ignore-imports=yes
 
 # Minimum lines number of a similarity.
-min-similarity-lines=4
+min-similarity-lines=34
 
 
 [BASIC]

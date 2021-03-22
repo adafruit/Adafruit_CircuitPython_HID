@@ -161,4 +161,3 @@ class KeyboardLayoutUS(KeyboardLayout):
         b"\xb5"  # ~ x35|SHIFT_FLAG (shift `)
         b"\x4c"  # DEL DELETE (called Forward Delete in usb.org document)
     )
-
