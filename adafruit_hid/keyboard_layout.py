@@ -90,6 +90,7 @@ class KeyboardLayout:
         return (keycode,)
 
     def _above128charval_to_keycode(self, char_val):
+        # pylint: disable=no-self-use
         raise ValueError("Not an ASCII character.")
 
     def _char_to_keycode(self, char):
