@@ -61,7 +61,40 @@ class ConsumerControl:
             # Advance to next track (song).
             consumer_control.send(ConsumerControlCode.SCAN_NEXT_TRACK)
         """
+        self.press(consumer_code)
+        self.release()
+
+    def press(self, consumer_code):
+        """Send a report to indicate that the given key has been pressed.
+        Only one consumer control action can be pressed at a time, so any one
+        that was previously pressed will be released.
+
+        :param consumer_code: a 16-bit consumer control code.
+
+        Examples::
+
+            from adafruit_hid.consumer_control_code import ConsumerControlCode
+
+            # Raise volume for 0.5 seconds
+            consumer_control.press(ConsumerControlCode.VOLUME_INCREMENT)
+            time.sleep(0.5)
+            consumer_control.release()
+        """
         struct.pack_into("<H", self._report, 0, consumer_code)
         self._consumer_device.send_report(self._report)
+
+    def release(self):
+        """Send a report indicating that the consumer control key has been
+        released. Only one consumer control key can be pressed at a time.
+
+        Examples::
+
+            from adafruit_hid.consumer_control_code import ConsumerControlCode
+
+            # Raise volume for 0.5 seconds
+            consumer_control.press(ConsumerControlCode.VOLUME_INCREMENT)
+            time.sleep(0.5)
+            consumer_control.release()
+        """
         self._report[0] = self._report[1] = 0x0
         self._consumer_device.send_report(self._report)
