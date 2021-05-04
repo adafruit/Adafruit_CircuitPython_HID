@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: MIT
 
 """
-`adafruit_hid.gamepad.Gamepad`
+`Gamepad`
 ====================================================
 
 * Author(s): Dan Halbert
@@ -12,7 +12,7 @@
 import struct
 import time
 
-from . import find_device
+from adafruit_hid import find_device
 
 
 class Gamepad:

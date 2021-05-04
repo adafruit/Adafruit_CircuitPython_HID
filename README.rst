@@ -124,8 +124,6 @@ The ``Mouse`` class simulates a three-button mouse with a scroll wheel.
 The ``ConsumerControl`` class emulates consumer control devices such as
 remote controls, or the multimedia keys on certain keyboards.
 
-*New in CircuitPython 3.0.*
-
 .. code-block:: python
 
     import usb_hid
@@ -139,23 +137,6 @@ remote controls, or the multimedia keys on certain keyboards.
 
     # Pause or resume playback.
     cc.send(ConsumerControlCode.PLAY_PAUSE)
-
-The ``Gamepad`` class emulates a two-joystick gamepad with 16 buttons.
-
-*New in CircuitPython 3.0.*
-
-.. code-block:: python
-
-    import usb_hid
-    from adafruit_hid.gamepad import Gamepad
-
-    gp = Gamepad(usb_hid.devices)
-
-    # Click gamepad buttons.
-    gp.click_buttons(1, 7)
-
-    # Move joysticks.
-    gp.move_joysticks(x=2, y=0, z=-20)
 
 Contributing
 ============
