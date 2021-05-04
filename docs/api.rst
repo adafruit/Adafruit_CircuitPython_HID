@@ -18,6 +18,3 @@
 
 .. automodule:: adafruit_hid.consumer_control_code
    :members:
-
-.. automodule:: adafruit_hid.gamepad
-   :members:

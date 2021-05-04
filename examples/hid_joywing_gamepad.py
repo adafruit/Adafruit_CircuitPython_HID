@@ -10,7 +10,7 @@ import busio
 from micropython import const
 import adafruit_seesaw
 import usb_hid
-from adafruit_hid.gamepad import Gamepad
+from gamepad import Gamepad
 
 
 def range_map(value, in_min, in_max, out_min, out_max):

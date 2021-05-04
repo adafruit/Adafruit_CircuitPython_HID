@@ -6,7 +6,7 @@ import digitalio
 import analogio
 import usb_hid
 
-from adafruit_hid.gamepad import Gamepad
+from gamepad import Gamepad
 
 gp = Gamepad(usb_hid.devices)
 
