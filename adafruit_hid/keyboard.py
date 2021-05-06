@@ -64,6 +64,54 @@ class Keyboard:
             time.sleep(1)
             self.release_all()
 
+        # Set default layout
+        self._layout = "en_us"
+        self._asciimap = __import__(self._layout)
+
+    def set_layout(self, layout):
+        """Sets the layout of the keyboard object. The string must match
+           the name of the mapping file.
+        """        
+        self._asciimap = __import__(layout)
+        self._layout = layout
+
+    def get_layout(self):
+        """Returns the selected layout as string
+        """   
+        return self._layout
+
+    def write(self, string):
+        """Type the string by pressing and releasing keys on my keyboard.
+
+        :param string: A string of ASCII characters.
+
+        Example::
+
+            # Write abc to the keyboard
+            keyboard.write('abc')
+        """
+        for char in string:
+            ascii_num = ord(str(char, "ascii"))            
+            if (ascii_num > 255): continue  # in case the character is not part of latin-1 charset
+            keycodes = self._asciimap.asciiToKeycode[ascii_num]
+            if isinstance(keycodes, tuple):
+                self.send(*keycodes)    # tuples needs to be unpacked by *
+            else:
+                self.send(keycodes)     # send a single keycode as int
+
+    def writeln(self, string):
+        """Type the string by pressing and releasing keys on my keyboard.
+
+        :param string: A string of ASCII characters.
+
+        Example::
+
+            # Write abc followed by RETURN to the keyboard
+            keyboard.writeln('abc')
+        """
+        self.write(string)
+        self.send(Keycode.ENTER)
+
     def press(self, *keycodes):
         """Send a report indicating that the given keys have been pressed.
 
