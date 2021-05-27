@@ -168,6 +168,9 @@ class Keyboard:
             from adafruit_hid.keycode import Keycode
             import time
 
+            # Initialize Keybaord
+            kbd = Keyboard(usb_hid.devices)
+            
             # Press and release CapsLock.
             kbd.press(Keycode.CAPS_LOCK)
             time.sleep(.09)
