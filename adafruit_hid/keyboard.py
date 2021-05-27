@@ -170,7 +170,7 @@ class Keyboard:
 
             # Initialize Keybaord
             kbd = Keyboard(usb_hid.devices)
-            
+
             # Press and release CapsLock.
             kbd.press(Keycode.CAPS_LOCK)
             time.sleep(.09)
