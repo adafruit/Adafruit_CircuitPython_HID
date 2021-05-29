@@ -41,3 +41,7 @@ class ConsumerControlCode:
     """Decrease volume"""
     VOLUME_INCREMENT = 0xE9
     """Increase volume"""
+    BRIGHTNESS_DECREMENT = 0x70
+    """Decrease Brightness"""
+    BRIGHTNESS_INCREMENT = 0x6F
+    """Increase Brightness"""
