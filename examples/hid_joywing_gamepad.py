@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: MIT
 
 # Use Joy FeatherWing to drive Gamepad.
+# https://www.adafruit.com/product/3632
+# https://learn.adafruit.com/joy-featherwing
 
 import time
 
