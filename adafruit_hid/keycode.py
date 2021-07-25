@@ -254,6 +254,17 @@ class Keycode:
     """Function key F18 (Mac)"""
     F19 = 0x6E
     """Function key F19 (Mac)"""
+    
+    F20 = 0x6F
+    """Function key F20"""
+    F21 = 0x70
+    """Function key F21"""
+    F22 = 0x71
+    """Function key F22"""
+    F23 = 0x72
+    """Function key F23"""
+    F24 = 0x73
+    """Function key F24"""
 
     LEFT_CONTROL = 0xE0
     """Control modifier left of the spacebar"""
