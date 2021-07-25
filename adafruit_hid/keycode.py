@@ -254,7 +254,7 @@ class Keycode:
     """Function key F18 (Mac)"""
     F19 = 0x6E
     """Function key F19 (Mac)"""
-    
+
     F20 = 0x6F
     """Function key F20"""
     F21 = 0x70
