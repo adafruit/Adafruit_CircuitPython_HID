@@ -65,13 +65,13 @@ class Gamepad:
             self.reset_all()
 
     def press_buttons(self, *buttons):
-        """Press and hold the given buttons. """
+        """Press and hold the given buttons."""
         for button in buttons:
             self._buttons_state |= 1 << self._validate_button_number(button) - 1
         self._send()
 
     def release_buttons(self, *buttons):
-        """Release the given buttons. """
+        """Release the given buttons."""
         for button in buttons:
             self._buttons_state &= ~(1 << self._validate_button_number(button) - 1)
         self._send()
