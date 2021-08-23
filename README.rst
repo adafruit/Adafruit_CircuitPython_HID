@@ -27,6 +27,10 @@ Please ensure all dependencies are available on the CircuitPython filesystem.
 This is easily achieved by downloading
 `the Adafruit library and driver bundle <https://github.com/adafruit/Adafruit_CircuitPython_Bundle>`_.
 
+Additional Layouts
+====================
+This library has an en-US layout. Please check out and expand `the library from Neradoc <https://github.com/Neradoc/Circuitpython_Keyboard_Layouts>`_ for additional layouts.
+
 Usage Example
 =============
 
