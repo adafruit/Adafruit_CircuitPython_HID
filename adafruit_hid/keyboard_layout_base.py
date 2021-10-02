@@ -3,6 +3,9 @@
 # SPDX-License-Identifier: MIT
 
 """
+`adafruit_hid.keyboard_layout_base.KeyboardLayoutBase`
+=======================================================
+
 * Author(s): Dan Halbert, AngainorDev, Neradoc
 """
 
