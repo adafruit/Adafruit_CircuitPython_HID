@@ -33,12 +33,17 @@ class KeyboardLayoutBase:
         """Specify the layout for the given keyboard.
 
         :param keyboard: a Keyboard object. Write characters to this keyboard when requested.
+
+        Example::
+
+            kbd = Keyboard(usb_hid.devices)
+            layout = KeyboardLayout(kbd)
         """
         self.keyboard = keyboard
 
     def _write(self, keycode, altgr=False):
         """Type a key combination based on shift bit and altgr bool
-        
+
         :param keycode: int value of the keycode, with the shift bit.
         :param altgr: bool indicating if the altgr key should be pressed too.
         """
@@ -58,6 +63,11 @@ class KeyboardLayoutBase:
         :param string: A string of ASCII characters.
         :raises ValueError: if any of the characters has no keycode
             (such as some control characters).
+
+        Example::
+
+            # Write abc followed by Enter to the keyboard
+            layout.write('abc\\n')
         """
         for char in string:
             # find easy ones first
@@ -87,10 +97,26 @@ class KeyboardLayoutBase:
         :param char: A single UTF8 character in a string.
         :type char: str of length one.
         :returns: tuple of Keycode keycodes.
+        :raises ValueError: if there is no keycode for ``char``.
+
+        Examples::
+
+            # Returns (Keycode.TAB,)
+            keycodes('\t')
+            # Returns (Keycode.A,)
+            keycode('a')
+            # Returns (Keycode.SHIFT, Keycode.A)
+            keycode('A')
+            # Raises ValueError with a US layout because it's an unknown character
+            keycode('é')
         """
         keycode = self._char_to_keycode(char)
         if keycode == 0:
-            return []
+            raise ValueError(
+                "No keycode available for character {letter} ({num}/0x{num:02x}).".format(
+                    letter=repr(char), num=ord(char)
+                )
+            )
 
         codes = []
         if char in self.NEED_ALTGR:
