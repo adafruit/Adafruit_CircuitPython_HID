@@ -12,9 +12,10 @@ __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_HID.git"
 
 
 class KeyboardLayoutBase:
-    """Map ASCII characters to appropriate keypresses on a standard US PC keyboard.
+    """Base class for keyboard layouts. Uses the tables defined in the subclass
+    to map UTF-8 characters to appropriate keypresses.
 
-    Non-ASCII characters and most control characters will raise an exception.
+    Non-supported characters and most control characters will raise an exception.
     """
 
     # We use the top bit of each byte (0x80) to indicate
