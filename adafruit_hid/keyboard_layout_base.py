@@ -21,16 +21,34 @@ class KeyboardLayoutBase:
     Non-supported characters and most control characters will raise an exception.
     """
 
-    # We use the top bit of each byte (0x80) to indicate
-    # that the shift key should be pressed
     SHIFT_FLAG = 0x80
+    """Bit set in any keycode byte if the shift key is required for the character."""
     ALTGR_FLAG = 0x80
+    """Bit set in the combined keys table if altgr is required for the first key."""
     SHIFT_CODE = 0xE1
+    """The SHIFT keycode, to avoid dependency to the Keycode class."""
     RIGHT_ALT_CODE = 0xE6
+    """The ALTGR keycode, to avoid dependency to the Keycode class."""
     ASCII_TO_KEYCODE = ()
-    NEED_ALTGR = ""
+    """Bytes string of keycodes for low ASCII characters, indexed by the ASCII value. Keycodes use the `SHIFT_FLAG` if needed. Dead keys are excluded by assigning the keycode 0."""
     HIGHER_ASCII = {}
+    """Dictionary that associates the ord() int value of high ascii and utf8 characters
+    to their keycode. Keycodes use the `SHIFT_FLAG` if needed."""
+    NEED_ALTGR = ""
+    """Characters in `ASCII_TO_KEYCODE` and `HIGHER_ASCII` that need the ALTGR key pressed to type."""
     COMBINED_KEYS = {}
+    """
+    Dictionary of characters (indexed by ord() value) that can be accessed by typing first
+    a dead key followed by a regular key, like ``ñ`` as ``~ + n``. The value is a 2-bytes int:
+    the high byte is the dead-key keycode (including SHIFT_FLAG), the low byte is the ascii code
+    of the second character, with ALTGR_FLAG set if the dead key (the first key) needs ALTGR.
+
+    The combined-key codes bits are: ``0b SDDD DDDD AKKK KKKK``:
+    ``S`` is the shift flag for the **first** key,
+    ``DDD DDDD`` is the keycode for the **first** key,
+    ``A`` is the altgr flag for the **first** key,
+    ``KKK KKKK`` is the (low) ASCII code for the second character.
+    """
 
     def __init__(self, keyboard):
         """Specify the layout for the given keyboard.
@@ -63,7 +81,7 @@ class KeyboardLayoutBase:
     def write(self, string):
         """Type the string by pressing and releasing keys on my keyboard.
 
-        :param string: A string of ASCII characters.
+        :param string: A string of UTF-8 characters to convert to key presses and send.
         :raises ValueError: if any of the characters has no keycode
             (such as some control characters).
 
@@ -132,11 +150,11 @@ class KeyboardLayoutBase:
         return codes
 
     def _above128char_to_keycode(self, char):
-        """Return keycode for above 128 ascii codes.
+        """Return keycode for above 128 utf8 codes.
 
         A character can be indexed by the char itself or its int ord() value.
 
-        :param char_val: ascii char value
+        :param char_val: char value
         :return: keycode, with modifiers if needed
         """
         if ord(char) in self.HIGHER_ASCII:
@@ -146,7 +164,7 @@ class KeyboardLayoutBase:
         return 0
 
     def _char_to_keycode(self, char):
-        """Return the HID keycode for the given ASCII character, with the SHIFT_FLAG possibly set.
+        """Return the HID keycode for the given character, with the SHIFT_FLAG possibly set.
 
         If the character requires pressing the Shift key, the SHIFT_FLAG bit is set.
         You must clear this bit before passing the keycode in a USB report.
