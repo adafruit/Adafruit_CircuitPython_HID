@@ -12,7 +12,7 @@
 from .keycode import Keycode
 
 try:
-    import Keyboard
+    from .keyboard import Keyboard
     from typing import Tuple
 except ImportError:
     pass
