@@ -12,6 +12,12 @@ import time
 
 from . import find_device
 
+try:
+    from typing import Sequence
+    import usb_hid
+except ImportError:
+    pass
+
 
 class Mouse:
     """Send USB HID mouse reports."""
@@ -23,10 +29,10 @@ class Mouse:
     MIDDLE_BUTTON = 4
     """Middle mouse button."""
 
-    def __init__(self, devices):
+    def __init__(self, devices: Sequence[usb_hid.device]):
         """Create a Mouse object that will send USB mouse HID reports.
 
-        Devices can be a list of devices that includes a keyboard device or a keyboard device
+        Devices can be a sequence of devices that includes a keyboard device or a keyboard device
         itself. A device is any object that implements ``send_report()``, ``usage_page`` and
         ``usage``.
         """
@@ -47,7 +53,7 @@ class Mouse:
             time.sleep(1)
             self._send_no_move()
 
-    def press(self, buttons):
+    def press(self, buttons: int) -> None:
         """Press the given mouse buttons.
 
         :param buttons: a bitwise-or'd combination of ``LEFT_BUTTON``,
@@ -64,7 +70,7 @@ class Mouse:
         self.report[0] |= buttons
         self._send_no_move()
 
-    def release(self, buttons):
+    def release(self, buttons: int) -> None:
         """Release the given mouse buttons.
 
         :param buttons: a bitwise-or'd combination of ``LEFT_BUTTON``,
@@ -73,12 +79,12 @@ class Mouse:
         self.report[0] &= ~buttons
         self._send_no_move()
 
-    def release_all(self):
+    def release_all(self) -> None:
         """Release all the mouse buttons."""
         self.report[0] = 0
         self._send_no_move()
 
-    def click(self, buttons):
+    def click(self, buttons: int) -> None:
         """Press and release the given mouse buttons.
 
         :param buttons: a bitwise-or'd combination of ``LEFT_BUTTON``,
@@ -96,7 +102,7 @@ class Mouse:
         self.press(buttons)
         self.release(buttons)
 
-    def move(self, x=0, y=0, wheel=0):
+    def move(self, x: int = 0, y: int = 0, wheel: int = 0) -> None:
         """Move the mouse and turn the wheel as directed.
 
         :param x: Move the mouse along the x axis. Negative is to the left, positive
@@ -134,7 +140,7 @@ class Mouse:
             y -= partial_y
             wheel -= partial_wheel
 
-    def _send_no_move(self):
+    def _send_no_move(self) -> None:
         """Send a button-only report."""
         self.report[1] = 0
         self.report[2] = 0
@@ -142,5 +148,5 @@ class Mouse:
         self._mouse_device.send_report(self.report)
 
     @staticmethod
-    def _limit(dist):
+    def _limit(dist: int) -> int:
         return min(127, max(-127, dist))
