@@ -16,6 +16,12 @@ from .keycode import Keycode
 
 from . import find_device
 
+try:
+    from typing import List
+    import usb_hid
+except ImportError:
+    pass
+
 _MAX_KEYPRESSES = const(6)
 
 
@@ -33,7 +39,7 @@ class Keyboard:
 
     # No more than _MAX_KEYPRESSES regular keys may be pressed at once.
 
-    def __init__(self, devices):
+    def __init__(self, devices: List[usb_hid.device]) -> None:
         """Create a Keyboard object that will send keyboard HID reports.
 
         Devices can be a list of devices that includes a keyboard device or a keyboard device
@@ -64,7 +70,7 @@ class Keyboard:
             time.sleep(1)
             self.release_all()
 
-    def press(self, *keycodes):
+    def press(self, *keycodes: int) -> None:
         """Send a report indicating that the given keys have been pressed.
 
         :param keycodes: Press these keycodes all at once.
@@ -90,7 +96,7 @@ class Keyboard:
             self._add_keycode_to_report(keycode)
         self._keyboard_device.send_report(self.report)
 
-    def release(self, *keycodes):
+    def release(self, *keycodes: int) -> None:
         """Send a USB HID report indicating that the given keys have been released.
 
         :param keycodes: Release these keycodes all at once.
@@ -106,13 +112,13 @@ class Keyboard:
             self._remove_keycode_from_report(keycode)
         self._keyboard_device.send_report(self.report)
 
-    def release_all(self):
+    def release_all(self) -> None:
         """Release all pressed keys."""
         for i in range(8):
             self.report[i] = 0
         self._keyboard_device.send_report(self.report)
 
-    def send(self, *keycodes):
+    def send(self, *keycodes: int) -> None:
         """Press the given keycodes and then release all pressed keys.
 
         :param keycodes: keycodes to send together
@@ -120,7 +126,7 @@ class Keyboard:
         self.press(*keycodes)
         self.release_all()
 
-    def _add_keycode_to_report(self, keycode):
+    def _add_keycode_to_report(self, keycode: int) -> None:
         """Add a single keycode to the USB HID report."""
         modifier = Keycode.modifier_bit(keycode)
         if modifier:
@@ -141,7 +147,7 @@ class Keyboard:
             # All slots are filled.
             raise ValueError("Trying to press more than six keys at once.")
 
-    def _remove_keycode_from_report(self, keycode):
+    def _remove_keycode_from_report(self, keycode: int) -> None:
         """Remove a single keycode from the report."""
         modifier = Keycode.modifier_bit(keycode)
         if modifier:
@@ -154,11 +160,11 @@ class Keyboard:
                     self.report_keys[i] = 0
 
     @property
-    def led_status(self):
+    def led_status(self) -> bytes:
         """Returns the last received report"""
         return self._keyboard_device.last_received_report
 
-    def led_on(self, led_code):
+    def led_on(self, led_code: int) -> bool:
         """Returns whether an LED is on based on the led code
 
         Examples::

@@ -9,6 +9,11 @@
 * Author(s): Scott Shawcroft, Dan Halbert
 """
 
+try:
+    import typing  # pylint: disable=unused-import
+except ImportError:
+    pass
+
 
 class Keycode:
     """USB HID Keycode constants.
@@ -299,7 +304,7 @@ class Keycode:
 
     # pylint: enable-msg=invalid-name
     @classmethod
-    def modifier_bit(cls, keycode):
+    def modifier_bit(cls, keycode: int) -> int:
         """Return the modifer bit to be set in an HID keycode report if this is a
         modifier key; otherwise return 0."""
         return (

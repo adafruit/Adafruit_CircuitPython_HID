@@ -11,6 +11,12 @@
 
 from .keycode import Keycode
 
+try:
+    from typing import Tuple
+    import Keyboard
+except ImportError:
+    pass
+
 
 class KeyboardLayoutUS:
     """Map ASCII characters to appropriate keypresses on a standard US PC keyboard.
@@ -163,7 +169,7 @@ class KeyboardLayoutUS:
         b"\x4c"  # DEL DELETE (called Forward Delete in usb.org document)
     )
 
-    def __init__(self, keyboard):
+    def __init__(self, keyboard: Keyboard) -> None:
         """Specify the layout for the given keyboard.
 
         :param keyboard: a Keyboard object. Write characters to this keyboard when requested.
@@ -176,7 +182,7 @@ class KeyboardLayoutUS:
 
         self.keyboard = keyboard
 
-    def write(self, string):
+    def write(self, string: str) -> None:
         """Type the string by pressing and releasing keys on my keyboard.
 
         :param string: A string of ASCII characters.
@@ -197,7 +203,7 @@ class KeyboardLayoutUS:
             self.keyboard.press(keycode)
             self.keyboard.release_all()
 
-    def keycodes(self, char):
+    def keycodes(self, char: str) -> Tuple[int, ...]:
         """Return a tuple of keycodes needed to type the given character.
 
         :param char: A single ASCII character in a string.
@@ -222,7 +228,7 @@ class KeyboardLayoutUS:
 
         return (keycode,)
 
-    def _char_to_keycode(self, char):
+    def _char_to_keycode(self, char: str) -> int:
         """Return the HID keycode for the given ASCII character, with the SHIFT_FLAG possibly set.
 
         If the character requires pressing the Shift key, the SHIFT_FLAG bit is set.
