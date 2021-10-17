@@ -19,7 +19,7 @@ Implementation Notes
 
 # imports
 try:
-    from typing import List
+    from typing import Sequence
     import usb_hid
 except ImportError:
     pass
@@ -29,10 +29,10 @@ __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_HID.git"
 
 
 def find_device(
-    devices: List[usb_hid.device], *, usage_page: int, usage: int
+    devices: Sequence[usb_hid.device], *, usage_page: int, usage: int
 ) -> usb_hid.device:
-    """Search through the provided list of devices to find the one with the matching usage_page and
-    usage."""
+    """Search through the provided sequence of devices to find the one with the matching
+    usage_page and usage."""
     if hasattr(devices, "send_report"):
         devices = [devices]
     for device in devices:

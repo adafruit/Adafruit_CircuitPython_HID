@@ -17,7 +17,7 @@ from .keycode import Keycode
 from . import find_device
 
 try:
-    from typing import List
+    from typing import Sequence
     import usb_hid
 except ImportError:
     pass
@@ -39,10 +39,10 @@ class Keyboard:
 
     # No more than _MAX_KEYPRESSES regular keys may be pressed at once.
 
-    def __init__(self, devices: List[usb_hid.device]) -> None:
+    def __init__(self, devices: Sequence[usb_hid.device]) -> None:
         """Create a Keyboard object that will send keyboard HID reports.
 
-        Devices can be a list of devices that includes a keyboard device or a keyboard device
+        Devices can be a sequence of devices that includes a keyboard device or a keyboard device
         itself. A device is any object that implements ``send_report()``, ``usage_page`` and
         ``usage``.
         """

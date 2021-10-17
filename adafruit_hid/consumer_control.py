@@ -22,7 +22,7 @@ import time
 from . import find_device
 
 try:
-    from typing import List
+    from typing import Sequence
     import usb_hid
 except ImportError:
     pass
@@ -31,10 +31,10 @@ except ImportError:
 class ConsumerControl:
     """Send ConsumerControl code reports, used by multimedia keyboards, remote controls, etc."""
 
-    def __init__(self, devices: List[usb_hid.device]) -> None:
+    def __init__(self, devices: Sequence[usb_hid.device]) -> None:
         """Create a ConsumerControl object that will send Consumer Control Device HID reports.
 
-        Devices can be a list of devices that includes a Consumer Control device or a CC device
+        Devices can be a sequence of devices that includes a Consumer Control device or a CC device
         itself. A device is any object that implements ``send_report()``, ``usage_page`` and
         ``usage``.
         """

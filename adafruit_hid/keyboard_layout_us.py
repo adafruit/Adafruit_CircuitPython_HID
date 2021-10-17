@@ -12,8 +12,8 @@
 from .keycode import Keycode
 
 try:
-    from typing import Tuple
     import Keyboard
+    from typing import Tuple
 except ImportError:
     pass
 

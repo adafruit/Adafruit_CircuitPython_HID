@@ -13,7 +13,7 @@ import time
 from . import find_device
 
 try:
-    from typing import List
+    from typing import Sequence
     import usb_hid
 except ImportError:
     pass
@@ -29,10 +29,10 @@ class Mouse:
     MIDDLE_BUTTON = 4
     """Middle mouse button."""
 
-    def __init__(self, devices: List[usb_hid.device]):
+    def __init__(self, devices: Sequence[usb_hid.device]):
         """Create a Mouse object that will send USB mouse HID reports.
 
-        Devices can be a list of devices that includes a keyboard device or a keyboard device
+        Devices can be a sequence of devices that includes a keyboard device or a keyboard device
         itself. A device is any object that implements ``send_report()``, ``usage_page`` and
         ``usage``.
         """
