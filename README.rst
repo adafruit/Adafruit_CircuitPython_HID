@@ -142,6 +142,11 @@ remote controls, or the multimedia keys on certain keyboards.
     # Pause or resume playback.
     cc.send(ConsumerControlCode.PLAY_PAUSE)
 
+Documentation
+=============
+
+API documentation for this library can be found on `Read the Docs <https://circuitpython.readthedocs.io/projects/hid/en/latest/>`_.
+
 Contributing
 ============
 
