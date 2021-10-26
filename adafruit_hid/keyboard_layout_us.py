@@ -11,12 +11,6 @@
 
 from .keyboard_layout_base import KeyboardLayoutBase
 
-try:
-    from typing import Tuple
-    from .keyboard import Keyboard
-except ImportError:
-    pass
-
 
 class KeyboardLayoutUS(KeyboardLayoutBase):
     """Map ASCII characters to appropriate keypresses on a standard US PC keyboard.

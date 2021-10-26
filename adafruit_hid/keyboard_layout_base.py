@@ -10,6 +10,13 @@
 """
 
 
+try:
+    from typing import Tuple
+    from .keyboard import Keyboard
+except ImportError:
+    pass
+
+
 __version__ = "0.0.0-auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_HID.git"
 
@@ -50,7 +57,7 @@ class KeyboardLayoutBase:
     ``KKK KKKK`` is the (low) ASCII code for the second character.
     """
 
-    def __init__(self, keyboard):
+    def __init__(self, keyboard: Keyboard) -> None:
         """Specify the layout for the given keyboard.
 
         :param keyboard: a Keyboard object. Write characters to this keyboard when requested.
@@ -62,7 +69,7 @@ class KeyboardLayoutBase:
         """
         self.keyboard = keyboard
 
-    def _write(self, keycode, altgr=False):
+    def _write(self, keycode: int, altgr: bool = False) -> None:
         """Type a key combination based on shift bit and altgr bool
 
         :param keycode: int value of the keycode, with the shift bit.
@@ -78,7 +85,7 @@ class KeyboardLayoutBase:
         self.keyboard.press(keycode)
         self.keyboard.release_all()
 
-    def write(self, string):
+    def write(self, string: str) -> None:
         """Type the string by pressing and releasing keys on my keyboard.
 
         :param string: A string of UTF-8 characters to convert to key presses and send.
@@ -112,7 +119,7 @@ class KeyboardLayoutBase:
                     )
                 )
 
-    def keycodes(self, char):
+    def keycodes(self, char: str) -> Tuple[int, ...]:
         """Return a tuple of keycodes needed to type the given character.
 
         :param char: A single UTF8 character in a string.
@@ -149,7 +156,7 @@ class KeyboardLayoutBase:
 
         return codes
 
-    def _above128char_to_keycode(self, char):
+    def _above128char_to_keycode(self, char: str) -> int:
         """Return keycode for above 128 utf8 codes.
 
         A character can be indexed by the char itself or its int ord() value.
@@ -163,7 +170,7 @@ class KeyboardLayoutBase:
             return self.HIGHER_ASCII[char]
         return 0
 
-    def _char_to_keycode(self, char):
+    def _char_to_keycode(self, char: str) -> int:
         """Return the HID keycode for the given character, with the SHIFT_FLAG possibly set.
 
         If the character requires pressing the Shift key, the SHIFT_FLAG bit is set.
