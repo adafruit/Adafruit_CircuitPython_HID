@@ -10,6 +10,9 @@
 .. automodule:: adafruit_hid.keyboard_layout_us
    :members:
 
+.. automodule:: adafruit_hid.keyboard_layout_base
+   :members:
+
 .. automodule:: adafruit_hid.mouse
    :members:
 
