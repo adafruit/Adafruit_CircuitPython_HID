@@ -37,12 +37,15 @@ class KeyboardLayoutBase:
     RIGHT_ALT_CODE = 0xE6
     """The ALTGR keycode, to avoid dependency to the Keycode class."""
     ASCII_TO_KEYCODE = ()
-    """Bytes string of keycodes for low ASCII characters, indexed by the ASCII value. Keycodes use the `SHIFT_FLAG` if needed. Dead keys are excluded by assigning the keycode 0."""
+    """Bytes string of keycodes for low ASCII characters, indexed by the ASCII value.
+    Keycodes use the `SHIFT_FLAG` if needed.
+    Dead keys are excluded by assigning the keycode 0."""
     HIGHER_ASCII = {}
     """Dictionary that associates the ord() int value of high ascii and utf8 characters
     to their keycode. Keycodes use the `SHIFT_FLAG` if needed."""
     NEED_ALTGR = ""
-    """Characters in `ASCII_TO_KEYCODE` and `HIGHER_ASCII` that need the ALTGR key pressed to type."""
+    """Characters in `ASCII_TO_KEYCODE` and `HIGHER_ASCII` that need
+    the ALTGR key pressed to type."""
     COMBINED_KEYS = {}
     """
     Dictionary of characters (indexed by ord() value) that can be accessed by typing first
