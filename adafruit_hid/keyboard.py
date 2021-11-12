@@ -39,7 +39,7 @@ class Keyboard:
 
     # No more than _MAX_KEYPRESSES regular keys may be pressed at once.
 
-    def __init__(self, devices: Sequence[usb_hid.device]) -> None:
+    def __init__(self, devices: Sequence[usb_hid.Device]) -> None:
         """Create a Keyboard object that will send keyboard HID reports.
 
         Devices can be a sequence of devices that includes a keyboard device or a keyboard device

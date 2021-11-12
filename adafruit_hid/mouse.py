@@ -29,7 +29,7 @@ class Mouse:
     MIDDLE_BUTTON = 4
     """Middle mouse button."""
 
-    def __init__(self, devices: Sequence[usb_hid.device]):
+    def __init__(self, devices: Sequence[usb_hid.Device]):
         """Create a Mouse object that will send USB mouse HID reports.
 
         Devices can be a sequence of devices that includes a keyboard device or a keyboard device
