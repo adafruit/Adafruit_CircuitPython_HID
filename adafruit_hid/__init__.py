@@ -29,8 +29,8 @@ __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_HID.git"
 
 
 def find_device(
-    devices: Sequence[usb_hid.device], *, usage_page: int, usage: int
-) -> usb_hid.device:
+    devices: Sequence[usb_hid.Device], *, usage_page: int, usage: int
+) -> usb_hid.Device:
     """Search through the provided sequence of devices to find the one with the matching
     usage_page and usage."""
     if hasattr(devices, "send_report"):

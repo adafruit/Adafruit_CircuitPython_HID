@@ -31,7 +31,7 @@ except ImportError:
 class ConsumerControl:
     """Send ConsumerControl code reports, used by multimedia keyboards, remote controls, etc."""
 
-    def __init__(self, devices: Sequence[usb_hid.device]) -> None:
+    def __init__(self, devices: Sequence[usb_hid.Device]) -> None:
         """Create a ConsumerControl object that will send Consumer Control Device HID reports.
 
         Devices can be a sequence of devices that includes a Consumer Control device or a CC device
