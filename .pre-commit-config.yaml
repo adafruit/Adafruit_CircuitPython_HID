@@ -24,7 +24,7 @@ repos:
         name: pylint (library code)
         types: [python]
         args:
-          - --disable=consider-using-f-string,duplicate-code
+          - --disable=consider-using-f-string
         exclude: "^(docs/|examples/|tests/|setup.py$)"
       - id: pylint
         name: pylint (example code)
