@@ -163,7 +163,7 @@ class Keyboard:
     def led_status(self) -> bytes:
         """Returns the last received report"""
         # get_last_received_report() returns None when nothing was received
-        return self._keyboard_device.get_last_received_report() or b'\x00'
+        return self._keyboard_device.get_last_received_report() or b"\x00"
 
     def led_on(self, led_code: int) -> bool:
         """Returns whether an LED is on based on the led code
