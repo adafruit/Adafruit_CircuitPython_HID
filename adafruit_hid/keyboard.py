@@ -162,7 +162,8 @@ class Keyboard:
     @property
     def led_status(self) -> bytes:
         """Returns the last received report"""
-        return self._keyboard_device.get_last_received_report()
+        # get_last_received_report() returns None when nothing was received
+        return self._keyboard_device.get_last_received_report() or b'\x00'
 
     def led_on(self, led_code: int) -> bool:
         """Returns whether an LED is on based on the led code
@@ -174,7 +175,7 @@ class Keyboard:
             from adafruit_hid.keycode import Keycode
             import time
 
-            # Initialize Keybaord
+            # Initialize Keyboard
             kbd = Keyboard(usb_hid.devices)
 
             # Press and release CapsLock.
