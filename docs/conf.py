@@ -36,8 +36,14 @@ master_doc = "index"
 
 # General information about the project.
 project = "Adafruit HID Library"
+creation_year = "2017"
 current_year = str(datetime.datetime.now().year)
-copyright = current_year + " Scott Shawcroft"
+year_duration = (
+    current_year
+    if current_year == creation_year
+    else creation_year + " - " + current_year
+)
+copyright = year_duration + " Scott Shawcroft"
 author = "Scott Shawcroft"
 
 # Ignore imports of these modules, which sphinx will not know about.
