@@ -6,6 +6,7 @@
 
 import os
 import sys
+import datetime
 
 sys.path.insert(0, os.path.abspath(".."))
 
@@ -35,7 +36,8 @@ master_doc = "index"
 
 # General information about the project.
 project = "Adafruit HID Library"
-copyright = "2017 Scott Shawcroft"
+current_year = str(datetime.datetime.now().year)
+copyright = current_year + " Scott Shawcroft"
 author = "Scott Shawcroft"
 
 # Ignore imports of these modules, which sphinx will not know about.
