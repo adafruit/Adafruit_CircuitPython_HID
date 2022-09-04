@@ -144,8 +144,10 @@ class Keyboard:
                 if self.report_keys[i] == 0:
                     self.report_keys[i] = keycode
                     return
-            # All slots are filled.
-            raise ValueError("Trying to press more than six keys at once.")
+            # All slots are filled. Shuffle down and reuse last slot
+            for i in range(_MAX_KEYPRESSES - 1):
+                self.report_keys[i] = self.report_keys[i + 1]
+                self.report_keys[-1] = keycode
 
     def _remove_keycode_from_report(self, keycode: int) -> None:
         """Remove a single keycode from the report."""
@@ -154,10 +156,22 @@ class Keyboard:
             # Turn off the bit for this modifier.
             self.report_modifier[0] &= ~modifier
         else:
+            # Clear any matching slots and move remaining keys down
+            j = 0
+            for i in range(  # pylint: disable=consider-using-enumerate
+                len(self.report_keys)
+            ):
+                pressed = self.report_keys[i]
+                if (  # pylint: disable=consider-using-in
+                    pressed == 0 or pressed == keycode
+                ):
+                    continue  # Remove this entry
+                self.report_keys[j] = self.report_keys[i]
+                j += 1
             # Check all the slots, just in case there's a duplicate. (There should not be.)
-            for i in range(_MAX_KEYPRESSES):
-                if self.report_keys[i] == keycode:
-                    self.report_keys[i] = 0
+            while j < len(self.report_keys):
+                self.report_keys[j] = 0
+                j += 1
 
     @property
     def led_status(self) -> bytes:
