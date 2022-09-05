@@ -160,11 +160,9 @@ class Keyboard:
         else:
             # Clear any matching slots and move remaining keys down
             j = 0
-            for i in range(_MAX_KEYPRESSES):  # pylint: disable=consider-using-enumerate
+            for i in range(_MAX_KEYPRESSES):
                 pressed = self.report_keys[i]
-                if (  # pylint: disable=consider-using-in
-                    pressed == 0 or pressed == keycode
-                ):
+                if (not pressed) or (pressed == keycode):
                     continue  # Remove this entry
                 self.report_keys[j] = self.report_keys[i]
                 j += 1
