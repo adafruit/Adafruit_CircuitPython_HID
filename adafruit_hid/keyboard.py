@@ -129,20 +129,22 @@ class Keyboard:
             # Set bit for this modifier.
             self.report_modifier[0] |= modifier
         else:
+            report_keys = self.report_keys
             # Don't press twice.
             for i in range(_MAX_KEYPRESSES):
-                if self.report_keys[i] == 0:
+                report_key = report_keys[i]
+                if report_key == 0:
                     # Put keycode in first empty slot. Since the report_keys
                     # are compact and unique, this is not a repeated key
-                    self.report_keys[i] = keycode
+                    report_keys[i] = keycode
                     return
-                if self.report_keys[i] == keycode:
+                if report_key == keycode:
                     # Already pressed.
                     return
             # All slots are filled. Shuffle down and reuse last slot
             for i in range(_MAX_KEYPRESSES - 1):
-                self.report_keys[i] = self.report_keys[i + 1]
-            self.report_keys[-1] = keycode
+                report_keys[i] = report_keys[i + 1]
+            report_keys[-1] = keycode
 
     def _remove_keycode_from_report(self, keycode: int) -> None:
         """Remove a single keycode from the report."""
@@ -151,20 +153,21 @@ class Keyboard:
             # Turn off the bit for this modifier.
             self.report_modifier[0] &= ~modifier
         else:
+            report_keys = self.report_keys
             # Clear the at most one matching slot and move remaining keys down
             j = 0
             for i in range(_MAX_KEYPRESSES):
-                pressed = self.report_keys[i]
+                pressed = report_keys[i]
                 if not pressed:
                     break  # Handled all used report slots
                 if pressed == keycode:
                     continue  # Remove this entry
                 if i != j:
-                    self.report_keys[j] = self.report_keys[i]
+                    report_keys[j] = report_keys[i]
                 j += 1
             # Clear any remaining slots
-            while j < _MAX_KEYPRESSES and self.report_keys[j]:
-                self.report_keys[j] = 0
+            while j < _MAX_KEYPRESSES and report_keys[j]:
+                report_keys[j] = 0
                 j += 1
 
     @property
