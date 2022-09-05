@@ -147,7 +147,7 @@ class Keyboard:
             # All slots are filled. Shuffle down and reuse last slot
             for i in range(_MAX_KEYPRESSES - 1):
                 self.report_keys[i] = self.report_keys[i + 1]
-                self.report_keys[-1] = keycode
+            self.report_keys[-1] = keycode
 
     def _remove_keycode_from_report(self, keycode: int) -> None:
         """Remove a single keycode from the report."""
