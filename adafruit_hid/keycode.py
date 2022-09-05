@@ -9,11 +9,6 @@
 * Author(s): Scott Shawcroft, Dan Halbert
 """
 
-try:
-    import typing  # pylint: disable=unused-import
-except ImportError:
-    pass
-
 
 class Keycode:
     """USB HID Keycode constants.
