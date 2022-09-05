@@ -135,15 +135,17 @@ class Keyboard:
         else:
             # Don't press twice.
             # (I'd like to use 'not in self.report_keys' here, but that's not implemented.)
+            free_slot = None
             for i in range(_MAX_KEYPRESSES):
+                if free_slot is None and self.report_keys[i] == 0:
+                    free_slot = i
                 if self.report_keys[i] == keycode:
                     # Already pressed.
                     return
             # Put keycode in first empty slot.
-            for i in range(_MAX_KEYPRESSES):
-                if self.report_keys[i] == 0:
-                    self.report_keys[i] = keycode
-                    return
+            if free_slot is not None:
+                self.report_keys[free_slot] = keycode
+                return
             # All slots are filled. Shuffle down and reuse last slot
             for i in range(_MAX_KEYPRESSES - 1):
                 self.report_keys[i] = self.report_keys[i + 1]
@@ -158,9 +160,7 @@ class Keyboard:
         else:
             # Clear any matching slots and move remaining keys down
             j = 0
-            for i in range(  # pylint: disable=consider-using-enumerate
-                len(self.report_keys)
-            ):
+            for i in range(_MAX_KEYPRESSES):  # pylint: disable=consider-using-enumerate
                 pressed = self.report_keys[i]
                 if (  # pylint: disable=consider-using-in
                     pressed == 0 or pressed == keycode
@@ -169,7 +169,7 @@ class Keyboard:
                 self.report_keys[j] = self.report_keys[i]
                 j += 1
             # Check all the slots, just in case there's a duplicate. (There should not be.)
-            while j < len(self.report_keys):
+            while j < _MAX_KEYPRESSES:
                 self.report_keys[j] = 0
                 j += 1
 
