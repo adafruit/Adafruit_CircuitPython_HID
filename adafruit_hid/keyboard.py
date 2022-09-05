@@ -134,18 +134,15 @@ class Keyboard:
             self.report_modifier[0] |= modifier
         else:
             # Don't press twice.
-            # (I'd like to use 'not in self.report_keys' here, but that's not implemented.)
-            free_slot = None
             for i in range(_MAX_KEYPRESSES):
-                if free_slot is None and self.report_keys[i] == 0:
-                    free_slot = i
+                if self.report_keys[i] == 0:
+                    # Put keycode in first empty slot. Since the report_keys
+                    # are compact and unique, this is not a repeated key
+                    self.report_keys[i] = keycode
+                    return
                 if self.report_keys[i] == keycode:
                     # Already pressed.
                     return
-            # Put keycode in first empty slot.
-            if free_slot is not None:
-                self.report_keys[free_slot] = keycode
-                return
             # All slots are filled. Shuffle down and reuse last slot
             for i in range(_MAX_KEYPRESSES - 1):
                 self.report_keys[i] = self.report_keys[i + 1]
@@ -158,16 +155,19 @@ class Keyboard:
             # Turn off the bit for this modifier.
             self.report_modifier[0] &= ~modifier
         else:
-            # Clear any matching slots and move remaining keys down
+            # Clear the at most one matching slot and move remaining keys down
             j = 0
             for i in range(_MAX_KEYPRESSES):
                 pressed = self.report_keys[i]
-                if (not pressed) or (pressed == keycode):
+                if not pressed:
+                    break  # Handled all used report slots
+                if pressed == keycode:
                     continue  # Remove this entry
-                self.report_keys[j] = self.report_keys[i]
+                if i != j:
+                    self.report_keys[j] = self.report_keys[i]
                 j += 1
-            # Check all the slots, just in case there's a duplicate. (There should not be.)
-            while j < _MAX_KEYPRESSES:
+            # Clear any remaining slots
+            while j < _MAX_KEYPRESSES and self.report_keys[j]:
                 self.report_keys[j] = 0
                 j += 1
 
