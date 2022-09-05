@@ -11,16 +11,12 @@
 
 import time
 from micropython import const
+import usb_hid
 
 from .keycode import Keycode
 
 from . import find_device
 
-try:
-    from typing import Sequence
-    import usb_hid
-except ImportError:
-    pass
 
 _MAX_KEYPRESSES = const(6)
 
@@ -39,7 +35,7 @@ class Keyboard:
 
     # No more than _MAX_KEYPRESSES regular keys may be pressed at once.
 
-    def __init__(self, devices: Sequence[usb_hid.Device]) -> None:
+    def __init__(self, devices: list[usb_hid.Device]) -> None:
         """Create a Keyboard object that will send keyboard HID reports.
 
         Devices can be a sequence of devices that includes a keyboard device or a keyboard device
