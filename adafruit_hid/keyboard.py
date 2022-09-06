@@ -11,16 +11,12 @@
 
 import time
 from micropython import const
+import usb_hid
 
 from .keycode import Keycode
 
 from . import find_device
 
-try:
-    from typing import Sequence
-    import usb_hid
-except ImportError:
-    pass
 
 _MAX_KEYPRESSES = const(6)
 
@@ -39,7 +35,7 @@ class Keyboard:
 
     # No more than _MAX_KEYPRESSES regular keys may be pressed at once.
 
-    def __init__(self, devices: Sequence[usb_hid.Device]) -> None:
+    def __init__(self, devices: list[usb_hid.Device]) -> None:
         """Create a Keyboard object that will send keyboard HID reports.
 
         Devices can be a sequence of devices that includes a keyboard device or a keyboard device
@@ -133,19 +129,22 @@ class Keyboard:
             # Set bit for this modifier.
             self.report_modifier[0] |= modifier
         else:
+            report_keys = self.report_keys
             # Don't press twice.
-            # (I'd like to use 'not in self.report_keys' here, but that's not implemented.)
             for i in range(_MAX_KEYPRESSES):
-                if self.report_keys[i] == keycode:
+                report_key = report_keys[i]
+                if report_key == 0:
+                    # Put keycode in first empty slot. Since the report_keys
+                    # are compact and unique, this is not a repeated key
+                    report_keys[i] = keycode
+                    return
+                if report_key == keycode:
                     # Already pressed.
                     return
-            # Put keycode in first empty slot.
-            for i in range(_MAX_KEYPRESSES):
-                if self.report_keys[i] == 0:
-                    self.report_keys[i] = keycode
-                    return
-            # All slots are filled.
-            raise ValueError("Trying to press more than six keys at once.")
+            # All slots are filled. Shuffle down and reuse last slot
+            for i in range(_MAX_KEYPRESSES - 1):
+                report_keys[i] = report_keys[i + 1]
+            report_keys[-1] = keycode
 
     def _remove_keycode_from_report(self, keycode: int) -> None:
         """Remove a single keycode from the report."""
@@ -154,10 +153,22 @@ class Keyboard:
             # Turn off the bit for this modifier.
             self.report_modifier[0] &= ~modifier
         else:
-            # Check all the slots, just in case there's a duplicate. (There should not be.)
+            report_keys = self.report_keys
+            # Clear the at most one matching slot and move remaining keys down
+            j = 0
             for i in range(_MAX_KEYPRESSES):
-                if self.report_keys[i] == keycode:
-                    self.report_keys[i] = 0
+                pressed = report_keys[i]
+                if not pressed:
+                    break  # Handled all used report slots
+                if pressed == keycode:
+                    continue  # Remove this entry
+                if i != j:
+                    report_keys[j] = report_keys[i]
+                j += 1
+            # Clear any remaining slots
+            while j < _MAX_KEYPRESSES and report_keys[j]:
+                report_keys[j] = 0
+                j += 1
 
     @property
     def led_status(self) -> bytes:
