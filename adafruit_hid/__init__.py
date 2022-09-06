@@ -36,7 +36,7 @@ def find_device(
     """Search through the provided sequence of devices to find the one with the matching
     usage_page and usage."""
     if hasattr(devices, "send_report"):
-        devices = [devices]
+        devices = [devices]  # type: ignore
     for device in devices:
         if (
             device.usage_page == usage_page
