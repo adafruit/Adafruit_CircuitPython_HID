@@ -2,13 +2,17 @@
 #
 # SPDX-License-Identifier: MIT
 
-name: Build CI
+name: GitHub Release Actions
 
-on: [pull_request, push]
+on:
+  release:
+    types: [published]
 
 jobs:
-  test:
+  upload-release-assets:
     runs-on: ubuntu-latest
     steps:
-    - name: Run Build CI workflow
-      uses: adafruit/workflows-circuitpython-libs/build@main
+    - name: Run GitHub Release CI workflow
+      uses: adafruit/workflows-circuitpython-libs/release-gh@main
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
