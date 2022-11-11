@@ -60,6 +60,11 @@ class KeyboardLayoutBase:
     ``KKK KKKK`` is the (low) ASCII code for the second character.
     """
 
+    SEVERAL_KEYCODE = {}
+    """
+    Like COMBINED_KEYS but use raw keycodes
+    """
+
     def __init__(self, keyboard: Keyboard) -> None:
         """Specify the layout for the given keyboard.
 
@@ -115,6 +120,9 @@ class KeyboardLayoutBase:
                 keycode = self._char_to_keycode(char)
                 # assume no altgr needed for second key
                 self._write(keycode, False)
+            elif ord(char) in self.SEVERAL_KEYCODE:
+                for keycode in self.SEVERAL_KEYCODE[ord(char)]:
+                    self._write(keycode, False)
             else:
                 raise ValueError(
                     "No keycode available for character {letter} ({num}/0x{num:02x}).".format(
