@@ -62,6 +62,9 @@ class Keyboard:
         # View onto bytes 2-7 in report.
         self.report_keys = memoryview(self.report)[2:]
 
+        # No keyboard LEDs on.
+        self._led_status = b"\x00"
+
         # Do a no-op to test if HID device is ready.
         # If not, wait a bit and try once more.
         try:
@@ -178,7 +181,10 @@ class Keyboard:
     def led_status(self) -> bytes:
         """Returns the last received report"""
         # get_last_received_report() returns None when nothing was received
-        return self._keyboard_device.get_last_received_report() or b"\x00"
+        led_report = self._keyboard_device.get_last_received_report()
+        if led_report is not None:
+            self._led_status = led_report
+        return self._led_status
 
     def led_on(self, led_code: int) -> bool:
         """Returns whether an LED is on based on the led code
