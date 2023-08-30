@@ -16,6 +16,7 @@ try:
 except ImportError:
     pass
 
+from time import sleep
 
 __version__ = "0.0.0+auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_HID.git"
@@ -88,10 +89,11 @@ class KeyboardLayoutBase:
         self.keyboard.press(keycode)
         self.keyboard.release_all()
 
-    def write(self, string: str) -> None:
+    def write(self, string: str, delay: float = None) -> None:
         """Type the string by pressing and releasing keys on my keyboard.
 
         :param string: A string of UTF-8 characters to convert to key presses and send.
+        :param float delay: Optional delay in seconds between key presses.
         :raises ValueError: if any of the characters has no keycode
             (such as some control characters).
 
@@ -121,6 +123,9 @@ class KeyboardLayoutBase:
                         letter=repr(char), num=ord(char)
                     )
                 )
+
+            if delay is not None:
+                sleep(delay)
 
     def keycodes(self, char: str) -> Tuple[int, ...]:
         """Return a tuple of keycodes needed to type the given character.
