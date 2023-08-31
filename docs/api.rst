@@ -9,6 +9,7 @@
 
 .. automodule:: adafruit_hid.keyboard_layout_us
    :members:
+   :inherited-members:
 
 .. automodule:: adafruit_hid.keyboard_layout_base
    :members:
