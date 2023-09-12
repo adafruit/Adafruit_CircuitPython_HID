@@ -74,7 +74,7 @@ class Keyboard:
             except OSError:
                 time.sleep(1.0)
         raise OSError("HID device init timeout.")
-    
+
     def press(self, *keycodes: int) -> None:
         """Send a report indicating that the given keys have been pressed.
 
