@@ -46,12 +46,14 @@ class Mouse:
         self.report = bytearray(4)
 
         # Do a no-op to test if HID device is ready.
-        # If not, wait a bit and try once more.
-        try:
-            self._send_no_move()
-        except OSError:
-            time.sleep(1)
-            self._send_no_move()
+        # Some hosts take awhile to enumerate after POR, so retry a few times.
+        for _ in range(20):
+            try:
+                self._send_no_move()
+                return
+            except OSError:
+                time.sleep(1.0)
+        raise OSError("HID device init timeout.")
 
     def press(self, buttons: int) -> None:
         """Press the given mouse buttons.

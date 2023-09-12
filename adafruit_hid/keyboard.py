@@ -66,13 +66,15 @@ class Keyboard:
         self._led_status = b"\x00"
 
         # Do a no-op to test if HID device is ready.
-        # If not, wait a bit and try once more.
-        try:
-            self.release_all()
-        except OSError:
-            time.sleep(1)
-            self.release_all()
-
+        # Some hosts take awhile to enumerate after POR, so retry a few times.
+        for _ in range(20):
+            try:
+                self.release_all()
+                return
+            except OSError:
+                time.sleep(1.0)
+        raise OSError("HID device init timeout.")
+    
     def press(self, *keycodes: int) -> None:
         """Send a report indicating that the given keys have been pressed.
 

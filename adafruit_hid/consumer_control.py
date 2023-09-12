@@ -44,12 +44,14 @@ class ConsumerControl:
         self._report = bytearray(2)
 
         # Do a no-op to test if HID device is ready.
-        # If not, wait a bit and try once more.
-        try:
-            self.send(0x0)
-        except OSError:
-            time.sleep(1)
-            self.send(0x0)
+        # Some hosts take awhile to enumerate after POR, so retry a few times.
+        for _ in range(20):
+            try:
+                self.send(0x0)
+                return
+            except OSError:
+                time.sleep(1.0)
+        raise OSError("HID device init timeout.")
 
     def send(self, consumer_code: int) -> None:
         """Send a report to do the specified consumer control action,
