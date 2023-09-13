@@ -20,7 +20,11 @@ Implementation Notes
 # imports
 from __future__ import annotations
 import time
-import supervisor
+
+try:
+    import supervisor
+except ImportError:
+    supervisor = None
 
 try:
     from typing import Sequence
@@ -33,10 +37,18 @@ __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_HID.git"
 
 
 def find_device(
-    devices: Sequence[usb_hid.Device], *, usage_page: int, usage: int, timeout: int
+    devices: Sequence[usb_hid.Device],
+    *,
+    usage_page: int,
+    usage: int,
+    timeout: int = None,
 ) -> usb_hid.Device:
     """Search through the provided sequence of devices to find the one with the matching
-    usage_page and usage. Wait up to timeout seconds for USB to become ready."""
+    usage_page and usage.
+
+    :param timeout: Time in seconds to wait for USB to become ready before timing out.
+    Defaults to None to wait indefinitely."""
+
     if hasattr(devices, "send_report"):
         devices = [devices]  # type: ignore
     device = None
@@ -51,8 +63,20 @@ def find_device(
     if device is None:
         raise ValueError("Could not find matching HID device.")
 
-    for _ in range(timeout):
-        if supervisor.runtime.usb_connected:
-            return device
+    if supervisor is None:
+        # Blinka doesn't have supervisor (see issue Adafruit_Blinka#711), so wait
+        # one second for USB to become ready
         time.sleep(1.0)
-    raise OSError("Failed to initialize HID device. Is USB connected?")
+    elif timeout is None:
+        # default behavior: wait indefinitely for USB to become ready
+        while not supervisor.runtime.usb_connected:
+            time.sleep(1.0)
+    else:
+        # wait up to timeout seconds for USB to become ready
+        for _ in range(timeout):
+            if supervisor.runtime.usb_connected:
+                return device
+            time.sleep(1.0)
+        raise OSError("Failed to initialize HID device. Is USB connected?")
+
+    return device

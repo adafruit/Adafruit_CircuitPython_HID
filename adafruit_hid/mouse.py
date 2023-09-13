@@ -27,10 +27,11 @@ class Mouse:
     MIDDLE_BUTTON = 4
     """Middle mouse button."""
 
-    def __init__(self, devices: Sequence[usb_hid.Device], timeout: int = 45) -> None:
+    def __init__(self, devices: Sequence[usb_hid.Device], timeout: int = None) -> None:
         """Create a Mouse object that will send USB mouse HID reports.
 
         :param timeout: Time in seconds to wait for USB to become ready before timing out.
+        Defaults to None to wait indefinitely.
 
         Devices can be a sequence of devices that includes a keyboard device or a keyboard device
         itself. A device is any object that implements ``send_report()``, ``usage_page`` and
