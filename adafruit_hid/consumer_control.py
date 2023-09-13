@@ -18,7 +18,6 @@ if sys.implementation.version[0] < 3:
 
 # pylint: disable=wrong-import-position
 import struct
-import time
 from . import find_device
 
 try:
@@ -31,27 +30,21 @@ except ImportError:
 class ConsumerControl:
     """Send ConsumerControl code reports, used by multimedia keyboards, remote controls, etc."""
 
-    def __init__(self, devices: Sequence[usb_hid.Device]) -> None:
+    def __init__(self, devices: Sequence[usb_hid.Device], timeout: int = 45) -> None:
         """Create a ConsumerControl object that will send Consumer Control Device HID reports.
+
+        :param timeout: Time in seconds to wait for USB to become ready before timing out.
 
         Devices can be a sequence of devices that includes a Consumer Control device or a CC device
         itself. A device is any object that implements ``send_report()``, ``usage_page`` and
         ``usage``.
         """
-        self._consumer_device = find_device(devices, usage_page=0x0C, usage=0x01)
+        self._consumer_device = find_device(
+            devices, usage_page=0x0C, usage=0x01, timeout=timeout
+        )
 
         # Reuse this bytearray to send consumer reports.
         self._report = bytearray(2)
-
-        # Do a no-op to test if HID device is ready.
-        # Some hosts take awhile to enumerate after POR, so retry a few times.
-        for _ in range(20):
-            try:
-                self.send(0x0)
-                return
-            except OSError:
-                time.sleep(1.0)
-        raise OSError("HID device init timeout.")
 
     def send(self, consumer_code: int) -> None:
         """Send a report to do the specified consumer control action,

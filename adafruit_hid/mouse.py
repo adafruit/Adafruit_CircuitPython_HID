@@ -8,8 +8,6 @@
 
 * Author(s): Dan Halbert
 """
-import time
-
 from . import find_device
 
 try:
@@ -29,14 +27,18 @@ class Mouse:
     MIDDLE_BUTTON = 4
     """Middle mouse button."""
 
-    def __init__(self, devices: Sequence[usb_hid.Device]):
+    def __init__(self, devices: Sequence[usb_hid.Device], timeout: int = 45) -> None:
         """Create a Mouse object that will send USB mouse HID reports.
+
+        :param timeout: Time in seconds to wait for USB to become ready before timing out.
 
         Devices can be a sequence of devices that includes a keyboard device or a keyboard device
         itself. A device is any object that implements ``send_report()``, ``usage_page`` and
         ``usage``.
         """
-        self._mouse_device = find_device(devices, usage_page=0x1, usage=0x02)
+        self._mouse_device = find_device(
+            devices, usage_page=0x1, usage=0x02, timeout=timeout
+        )
 
         # Reuse this bytearray to send mouse reports.
         # report[0] buttons pressed (LEFT, MIDDLE, RIGHT)
@@ -44,16 +46,6 @@ class Mouse:
         # report[2] y movement
         # report[3] wheel movement
         self.report = bytearray(4)
-
-        # Do a no-op to test if HID device is ready.
-        # Some hosts take awhile to enumerate after POR, so retry a few times.
-        for _ in range(20):
-            try:
-                self._send_no_move()
-                return
-            except OSError:
-                time.sleep(1.0)
-        raise OSError("HID device init timeout.")
 
     def press(self, buttons: int) -> None:
         """Press the given mouse buttons.

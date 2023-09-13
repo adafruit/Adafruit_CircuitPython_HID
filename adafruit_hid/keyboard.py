@@ -9,7 +9,6 @@
 * Author(s): Scott Shawcroft, Dan Halbert
 """
 
-import time
 from micropython import const
 import usb_hid
 
@@ -39,14 +38,18 @@ class Keyboard:
 
     # No more than _MAX_KEYPRESSES regular keys may be pressed at once.
 
-    def __init__(self, devices: Sequence[usb_hid.Device]) -> None:
+    def __init__(self, devices: Sequence[usb_hid.Device], timeout: int = 45) -> None:
         """Create a Keyboard object that will send keyboard HID reports.
+
+        :param timeout: Time in seconds to wait for USB to become ready before timing out.
 
         Devices can be a sequence of devices that includes a keyboard device or a keyboard device
         itself. A device is any object that implements ``send_report()``, ``usage_page`` and
         ``usage``.
         """
-        self._keyboard_device = find_device(devices, usage_page=0x1, usage=0x06)
+        self._keyboard_device = find_device(
+            devices, usage_page=0x1, usage=0x06, timeout=timeout
+        )
 
         # Reuse this bytearray to send keyboard reports.
         self.report = bytearray(8)
@@ -64,16 +67,6 @@ class Keyboard:
 
         # No keyboard LEDs on.
         self._led_status = b"\x00"
-
-        # Do a no-op to test if HID device is ready.
-        # Some hosts take awhile to enumerate after POR, so retry a few times.
-        for _ in range(20):
-            try:
-                self.release_all()
-                return
-            except OSError:
-                time.sleep(1.0)
-        raise OSError("HID device init timeout.")
 
     def press(self, *keycodes: int) -> None:
         """Send a report indicating that the given keys have been pressed.

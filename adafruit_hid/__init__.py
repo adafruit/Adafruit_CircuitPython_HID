@@ -19,6 +19,8 @@ Implementation Notes
 
 # imports
 from __future__ import annotations
+import time
+import supervisor
 
 try:
     from typing import Sequence
@@ -31,17 +33,26 @@ __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_HID.git"
 
 
 def find_device(
-    devices: Sequence[usb_hid.Device], *, usage_page: int, usage: int
+    devices: Sequence[usb_hid.Device], *, usage_page: int, usage: int, timeout: int
 ) -> usb_hid.Device:
     """Search through the provided sequence of devices to find the one with the matching
-    usage_page and usage."""
+    usage_page and usage. Wait up to timeout seconds for USB to become ready."""
     if hasattr(devices, "send_report"):
         devices = [devices]  # type: ignore
-    for device in devices:
+    device = None
+    for dev in devices:
         if (
-            device.usage_page == usage_page
-            and device.usage == usage
-            and hasattr(device, "send_report")
+            dev.usage_page == usage_page
+            and dev.usage == usage
+            and hasattr(dev, "send_report")
         ):
+            device = dev
+            break
+    if device is None:
+        raise ValueError("Could not find matching HID device.")
+
+    for _ in range(timeout):
+        if supervisor.runtime.usb_connected:
             return device
-    raise ValueError("Could not find matching HID device.")
+        time.sleep(1.0)
+    raise OSError("Failed to initialize HID device. Is USB connected?")
