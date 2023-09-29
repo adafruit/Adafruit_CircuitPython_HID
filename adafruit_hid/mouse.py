@@ -147,8 +147,8 @@ class Mouse:
             positive is downwards.
         :param wheel: Rotate the wheel this amount. Negative is toward the user, positive
             is away from the user. The scrolling effect depends on the host.
-        :param duration: If ``0`` (the default), move the mouse and turn the wheel as quickly as possible.
-            Otherwise, move and turn the wheel over ``duration`` seconds.
+        :param duration: If ``0`` (the default), move the mouse and turn the wheel as quickly as
+            possible. Otherwise, move and turn the wheel over ``duration`` seconds.
 
         Examples::
 
