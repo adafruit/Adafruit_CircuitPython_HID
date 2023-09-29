@@ -8,6 +8,8 @@
 
 * Author(s): Dan Halbert
 """
+import time
+
 from . import find_device
 
 try:
@@ -97,7 +99,33 @@ class Mouse:
         self.press(buttons)
         self.release(buttons)
 
-    def move(self, x: int = 0, y: int = 0, wheel: int = 0) -> None:
+    def _direct_move(self, x: int = 0, y: int = 0, wheel: int = 0) -> None:
+        # Send multiple reports if necessary to move or scroll requested amounts.
+        while x != 0 or y != 0 or wheel != 0:
+            partial_x = self._limit(x)
+            partial_y = self._limit(y)
+            partial_wheel = self._limit(wheel)
+            self.report[1] = partial_x & 0xFF
+            self.report[2] = partial_y & 0xFF
+            self.report[3] = partial_wheel & 0xFF
+            self._mouse_device.send_report(self.report)
+            x -= partial_x
+            y -= partial_y
+            wheel -= partial_wheel
+
+    def _linear_progress(self, x: int, y: int, wheel: int, duration: float):
+        start_time = time.monotonic()
+
+        while (current_time := time.monotonic()) < start_time + duration:
+            progress = (current_time - start_time) / duration
+
+            yield (int(x * progress), int(y * progress), int(wheel * progress))
+
+        yield (x, y, wheel)
+
+    def move(
+        self, x: int = 0, y: int = 0, wheel: int = 0, *, duration: float = 0
+    ) -> None:
         """Move the mouse and turn the wheel as directed.
 
         :param x: Move the mouse along the x axis. Negative is to the left, positive
@@ -106,6 +134,8 @@ class Mouse:
             positive is downwards.
         :param wheel: Rotate the wheel this amount. Negative is toward the user, positive
             is away from the user. The scrolling effect depends on the host.
+        :param duration: If ``0`` (the default), move the mouse and turn the wheel as quickly as possible.
+            Otherwise, move and turn the wheel over ``duration`` seconds.
 
         Examples::
 
@@ -121,19 +151,23 @@ class Mouse:
 
             # Roll the mouse wheel away from the user.
             m.move(wheel=1)
+
+            # Move 100 to the left during 2 seconds.
+            m.move(x=-100, duration=2)
         """
-        # Send multiple reports if necessary to move or scroll requested amounts.
-        while x != 0 or y != 0 or wheel != 0:
-            partial_x = self._limit(x)
-            partial_y = self._limit(y)
-            partial_wheel = self._limit(wheel)
-            self.report[1] = partial_x & 0xFF
-            self.report[2] = partial_y & 0xFF
-            self.report[3] = partial_wheel & 0xFF
-            self._mouse_device.send_report(self.report)
-            x -= partial_x
-            y -= partial_y
-            wheel -= partial_wheel
+        if duration == 0:
+            self._direct_move(x, y, wheel)
+            return
+
+        last_x = last_y = last_wheel = 0
+
+        for current_x, current_y, current_wheel in self._linear_progress(
+            x, y, wheel, duration
+        ):
+            self._direct_move(
+                current_x - last_x, current_y - last_y, current_wheel - last_wheel
+            )
+            last_x, last_y, last_wheel = current_x, current_y, current_wheel
 
     def _send_no_move(self) -> None:
         """Send a button-only report."""
