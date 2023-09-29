@@ -13,7 +13,7 @@ import time
 from . import find_device
 
 try:
-    from typing import Sequence
+    from typing import Sequence, Callable
     import usb_hid
 except ImportError:
     pass
@@ -99,7 +99,7 @@ class Mouse:
         self.press(buttons)
         self.release(buttons)
 
-    def _direct_move(self, x: int = 0, y: int = 0, wheel: int = 0) -> None:
+    def _move_relative(self, x: int = 0, y: int = 0, wheel: int = 0) -> None:
         # Send multiple reports if necessary to move or scroll requested amounts.
         while x != 0 or y != 0 or wheel != 0:
             partial_x = self._limit(x)
@@ -113,18 +113,31 @@ class Mouse:
             y -= partial_y
             wheel -= partial_wheel
 
-    def _linear_progress(self, x: int, y: int, wheel: int, duration: float):
+    @staticmethod
+    def _progress(
+        duration: float,
+        easing_function: Callable = None,
+    ):
         start_time = time.monotonic()
 
         while (current_time := time.monotonic()) < start_time + duration:
             progress = (current_time - start_time) / duration
 
-            yield (int(x * progress), int(y * progress), int(wheel * progress))
+            if easing_function:
+                progress = easing_function(progress)
 
-        yield (x, y, wheel)
+            yield progress
+
+        yield 1
 
     def move(
-        self, x: int = 0, y: int = 0, wheel: int = 0, *, duration: float = 0
+        self,
+        x: int = 0,
+        y: int = 0,
+        wheel: int = 0,
+        *,
+        duration: float = 0,
+        easing_function: "Callable" = None,
     ) -> None:
         """Move the mouse and turn the wheel as directed.
 
@@ -156,15 +169,17 @@ class Mouse:
             m.move(x=-100, duration=2)
         """
         if duration == 0:
-            self._direct_move(x, y, wheel)
+            self._move_relative(x, y, wheel)
             return
 
         last_x = last_y = last_wheel = 0
 
-        for current_x, current_y, current_wheel in self._linear_progress(
-            x, y, wheel, duration
-        ):
-            self._direct_move(
+        for progress in self._progress(duration, easing_function):
+            current_x = int(x * progress)
+            current_y = int(y * progress)
+            current_wheel = int(wheel * progress)
+
+            self._move_relative(
                 current_x - last_x, current_y - last_y, current_wheel - last_wheel
             )
             last_x, last_y, last_wheel = current_x, current_y, current_wheel
