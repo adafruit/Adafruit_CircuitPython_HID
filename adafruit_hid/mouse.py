@@ -115,7 +115,7 @@ class Mouse:
             m.move(x=-100)
 
             # Move diagonally to the upper right.
-            m.move(50, 20)
+            m.move(50, -20)
             # Same.
             m.move(x=50, y=-20)
 
