@@ -26,6 +26,10 @@ class Mouse:
     """Right mouse button."""
     MIDDLE_BUTTON = 4
     """Middle mouse button."""
+    BACK_BUTTON = 8
+    """Back mouse button."""
+    FORWARD_BUTTON = 16
+    """Forward mouse button."""
 
     def __init__(self, devices: Sequence[usb_hid.Device], timeout: int = None) -> None:
         """Create a Mouse object that will send USB mouse HID reports.
