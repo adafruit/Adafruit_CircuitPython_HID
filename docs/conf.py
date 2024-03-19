@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# SPDX-FileCopyrightText: 2021 ladyada for Adafruit Industries
+# SPDX-FileCopyrightText: 2017 Scott Shawcroft, written for Adafruit Industries
 #
 # SPDX-License-Identifier: MIT
 
@@ -19,13 +19,26 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinxcontrib.jquery",
     "sphinx.ext.intersphinx",
-    "sphinx.ext.viewcode",
+    "sphinx.ext.napoleon",
+    "sphinx.ext.todo",
 ]
+
+# TODO: Please Read!
+# Uncomment the below if you use native CircuitPython modules such as
+# digitalio, micropython and busio. List the modules you use. Without it, the
+# autodoc module docs will fail to generate with a warning.
+autodoc_mock_imports = ["usb_hid"]
+
+autodoc_preserve_defaults = True
+
 
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),
     "CircuitPython": ("https://docs.circuitpython.org/en/latest/", None),
 }
+
+# Show the docstring from both the class and its __init__() method.
+autoclass_content = "both"
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
@@ -47,9 +60,6 @@ year_duration = (
 copyright = year_duration + " Scott Shawcroft"
 author = "Scott Shawcroft"
 
-# Ignore imports of these modules, which sphinx will not know about.
-autodoc_mock_imports = ["usb_hid"]
-
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.
@@ -69,7 +79,13 @@ language = "en"
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This patterns also effect to html_static_path and html_extra_path
-exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", ".env", "CODE_OF_CONDUCT.md"]
+exclude_patterns = [
+    "_build",
+    "Thumbs.db",
+    ".DS_Store",
+    ".env",
+    "CODE_OF_CONDUCT.md",
+]
 
 # The reST default role (used for this markup: `text`) to use for all
 # documents.
@@ -89,6 +105,7 @@ todo_include_todos = False
 # If this is True, todo emits a warning for each TODO entries. The default is False.
 todo_emit_warnings = True
 
+napoleon_numpy_docstring = False
 
 # -- Options for HTML output ----------------------------------------------
 
@@ -118,16 +135,12 @@ htmlhelp_basename = "AdafruitHIDLibrarydoc"
 
 latex_elements = {
     # The paper size ('letterpaper' or 'a4paper').
-    #
     # 'papersize': 'letterpaper',
     # The font size ('10pt', '11pt' or '12pt').
-    #
     # 'pointsize': '10pt',
     # Additional stuff for the LaTeX preamble.
-    #
     # 'preamble': '',
     # Latex figure (float) alignment
-    #
     # 'figure_align': 'htbp',
 }
 
