@@ -34,7 +34,7 @@ class ConsumerControl:
         """Create a ConsumerControl object that will send Consumer Control Device HID reports.
 
         :param timeout: Time in seconds to wait for USB to become ready before timing out.
-        Defaults to None to wait indefinitely.
+          Defaults to None to wait indefinitely.
 
         Devices can be a sequence of devices that includes a Consumer Control device or a CC device
         itself. A device is any object that implements ``send_report()``, ``usage_page`` and
