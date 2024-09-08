@@ -10,7 +10,6 @@
 """
 
 from micropython import const
-import usb_hid
 
 from .keycode import Keycode
 
@@ -18,7 +17,8 @@ from . import find_device
 
 try:
     from typing import Sequence
-except:  # pylint: disable=bare-except
+    import usb_hid
+except ImportError:
     pass
 
 _MAX_KEYPRESSES = const(6)
