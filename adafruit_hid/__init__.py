@@ -9,12 +9,6 @@
 This driver simulates USB HID devices.
 
 * Author(s): Scott Shawcroft, Dan Halbert
-
-Implementation Notes
---------------------
-**Software and Dependencies:**
-* Adafruit CircuitPython firmware for the supported boards:
-  https://github.com/adafruit/circuitpython/releases
 """
 
 # imports
@@ -48,12 +42,14 @@ def find_device(
     usage: int,
     timeout: int = None,
 ) -> object:
-    """Search through the provided sequence of devices to find the one with the matching
+    """
+    Search through the provided sequence of devices to find the one with the matching
     usage_page and usage.
 
     :param timeout: Time in seconds to wait for USB to become ready before timing out.
-    Defaults to None to wait indefinitely.
-    Ignored if device is not a `usb_hid.Device`; it might be BLE, for instance."""
+      Defaults to None to wait indefinitely.
+      Ignored if device is not a `usb_hid.Device`; it might be BLE, for instance.
+    """
 
     if hasattr(devices, "send_report"):
         devices = [devices]  # type: ignore
