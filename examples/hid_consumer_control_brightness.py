@@ -2,9 +2,11 @@
 # SPDX-License-Identifier: MIT
 
 import time
+
 import board
 import digitalio
 import usb_hid
+
 from adafruit_hid.consumer_control import ConsumerControl
 from adafruit_hid.consumer_control_code import ConsumerControlCode
 

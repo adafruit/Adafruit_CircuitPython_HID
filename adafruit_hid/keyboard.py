@@ -11,12 +11,12 @@
 
 from micropython import const
 
-from .keycode import Keycode
-
 from . import find_device
+from .keycode import Keycode
 
 try:
     from typing import Sequence
+
     import usb_hid
 except ImportError:
     pass
@@ -48,9 +48,7 @@ class Keyboard:
         itself. A device is any object that implements ``send_report()``, ``usage_page`` and
         ``usage``.
         """
-        self._keyboard_device = find_device(
-            devices, usage_page=0x1, usage=0x06, timeout=timeout
-        )
+        self._keyboard_device = find_device(devices, usage_page=0x1, usage=0x06, timeout=timeout)
 
         # Reuse this bytearray to send keyboard reports.
         self.report = bytearray(8)

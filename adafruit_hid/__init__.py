@@ -13,6 +13,7 @@ This driver simulates USB HID devices.
 
 # imports
 from __future__ import annotations
+
 import time
 
 try:
@@ -55,11 +56,7 @@ def find_device(
         devices = [devices]  # type: ignore
     device = None
     for dev in devices:
-        if (
-            dev.usage_page == usage_page
-            and dev.usage == usage
-            and hasattr(dev, "send_report")
-        ):
+        if dev.usage_page == usage_page and dev.usage == usage and hasattr(dev, "send_report"):
             device = dev
             break
     if device is None:

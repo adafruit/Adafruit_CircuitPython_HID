@@ -9,9 +9,9 @@
 * Author(s): Dan Halbert, AngainorDev, Neradoc
 """
 
-
 try:
     from typing import Tuple
+
     from .keyboard import Keyboard
 except ImportError:
     pass
