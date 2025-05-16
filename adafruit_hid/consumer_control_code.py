@@ -17,8 +17,6 @@ class ConsumerControlCode:
     https://www.usb.org/sites/default/files/hut1_21_0.pdf#page=118.
     """
 
-    # pylint: disable-msg=too-few-public-methods
-
     RECORD = 0xB2
     """Record"""
     FAST_FORWARD = 0xB3

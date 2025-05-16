@@ -14,10 +14,10 @@ import time
 
 import board
 import busio
-from micropython import const
-from adafruit_seesaw.seesaw import Seesaw
 import usb_hid
+from adafruit_seesaw.seesaw import Seesaw
 from hid_gamepad import Gamepad
+from micropython import const
 
 
 def range_map(value, in_min, in_max, out_min, out_max):

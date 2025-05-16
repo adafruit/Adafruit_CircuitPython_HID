@@ -12,16 +12,15 @@
 import sys
 
 if sys.implementation.version[0] < 3:
-    raise ImportError(
-        "{0} is not supported in CircuitPython 2.x or lower".format(__name__)
-    )
+    raise ImportError(f"{__name__} is not supported in CircuitPython 2.x or lower")
 
-# pylint: disable=wrong-import-position
 import struct
+
 from . import find_device
 
 try:
     from typing import Sequence
+
     import usb_hid
 except ImportError:
     pass
@@ -40,9 +39,7 @@ class ConsumerControl:
         itself. A device is any object that implements ``send_report()``, ``usage_page`` and
         ``usage``.
         """
-        self._consumer_device = find_device(
-            devices, usage_page=0x0C, usage=0x01, timeout=timeout
-        )
+        self._consumer_device = find_device(devices, usage_page=0x0C, usage=0x01, timeout=timeout)
 
         # Reuse this bytearray to send consumer reports.
         self._report = bytearray(2)

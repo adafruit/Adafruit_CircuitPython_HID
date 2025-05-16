@@ -1,0 +1,109 @@
+# SPDX-FileCopyrightText: 2024 Tim Cocks for Adafruit Industries
+#
+# SPDX-License-Identifier: MIT
+
+target-version = "py38"
+line-length = 100
+
+[lint]
+preview = true
+select = ["I", "PL", "UP"]
+
+extend-select = [
+  "D419",  # empty-docstring
+  "E501",  # line-too-long
+  "W291",  # trailing-whitespace
+  "PLC0414",  # useless-import-alias
+  "PLC2401",  # non-ascii-name
+  "PLC2801",  # unnecessary-dunder-call
+  "PLC3002",  # unnecessary-direct-lambda-call
+  "E999",  # syntax-error
+  "PLE0101",  # return-in-init
+  "F706",  # return-outside-function
+  "F704",  # yield-outside-function
+  "PLE0116",  # continue-in-finally
+  "PLE0117",  # nonlocal-without-binding
+  "PLE0241",  # duplicate-bases
+  "PLE0302",  # unexpected-special-method-signature
+  "PLE0604",  # invalid-all-object
+  "PLE0605",  # invalid-all-format
+  "PLE0643",  # potential-index-error
+  "PLE0704",  # misplaced-bare-raise
+  "PLE1141",  # dict-iter-missing-items
+  "PLE1142",  # await-outside-async
+  "PLE1205",  # logging-too-many-args
+  "PLE1206",  # logging-too-few-args
+  "PLE1307",  # bad-string-format-type
+  "PLE1310",  # bad-str-strip-call
+  "PLE1507",  # invalid-envvar-value
+  "PLE2502",  # bidirectional-unicode
+  "PLE2510",  # invalid-character-backspace
+  "PLE2512",  # invalid-character-sub
+  "PLE2513",  # invalid-character-esc
+  "PLE2514",  # invalid-character-nul
+  "PLE2515",  # invalid-character-zero-width-space
+  "PLR0124",  # comparison-with-itself
+  "PLR0202",  # no-classmethod-decorator
+  "PLR0203",  # no-staticmethod-decorator
+  "UP004",  # useless-object-inheritance
+  "PLR0206",  # property-with-parameters
+  "PLR0904",  # too-many-public-methods
+  "PLR0911",  # too-many-return-statements
+  "PLR0912",  # too-many-branches
+  "PLR0913",  # too-many-arguments
+  "PLR0914",  # too-many-locals
+  "PLR0915",  # too-many-statements
+  "PLR0916",  # too-many-boolean-expressions
+  "PLR1702",  # too-many-nested-blocks
+  "PLR1704",  # redefined-argument-from-local
+  "PLR1711",  # useless-return
+  "C416",  # unnecessary-comprehension
+  "PLR1733",  # unnecessary-dict-index-lookup
+  "PLR1736",  # unnecessary-list-index-lookup
+
+  # ruff reports this rule is unstable
+  #"PLR6301",  # no-self-use
+
+  "PLW0108",  # unnecessary-lambda
+  "PLW0120",  # useless-else-on-loop
+  "PLW0127",  # self-assigning-variable
+  "PLW0129",  # assert-on-string-literal
+  "B033",  # duplicate-value
+  "PLW0131",  # named-expr-without-context
+  "PLW0245",  # super-without-brackets
+  "PLW0406",  # import-self
+  "PLW0602",  # global-variable-not-assigned
+  "PLW0603",  # global-statement
+  "PLW0604",  # global-at-module-level
+
+  # fails on the try: import typing used by libraries
+  #"F401",  # unused-import
+
+  "F841",  # unused-variable
+  "E722",  # bare-except
+  "PLW0711",  # binary-op-exception
+  "PLW1501",  # bad-open-mode
+  "PLW1508",  # invalid-envvar-default
+  "PLW1509",  # subprocess-popen-preexec-fn
+  "PLW2101",  # useless-with-lock
+  "PLW3301",  # nested-min-max
+]
+
+ignore = [
+    "PLR2004", # magic-value-comparison
+    "UP030", # format literals
+    "PLW1514",  # unspecified-encoding
+    "PLR0913", # too-many-arguments
+    "PLR0915", # too-many-statements
+    "PLR0917", # too-many-positional-arguments
+    "PLR0904", # too-many-public-methods
+    "PLR0912", # too-many-branches
+    "PLR0916", # too-many-boolean-expressions
+    "PLR6301", # could-be-static no-self-use
+    "PLC0415", # import outside toplevel
+    "PLC2701", # private import
+    "PLW2901", # loop var overwrite
+]
+
+[format]
+line-ending = "lf"

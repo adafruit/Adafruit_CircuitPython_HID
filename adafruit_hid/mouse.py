@@ -8,10 +8,12 @@
 
 * Author(s): Dan Halbert
 """
+
 from . import find_device
 
 try:
     from typing import Sequence
+
     import usb_hid
 except ImportError:
     pass
@@ -41,9 +43,7 @@ class Mouse:
         itself. A device is any object that implements ``send_report()``, ``usage_page`` and
         ``usage``.
         """
-        self._mouse_device = find_device(
-            devices, usage_page=0x1, usage=0x02, timeout=timeout
-        )
+        self._mouse_device = find_device(devices, usage_page=0x1, usage=0x02, timeout=timeout)
 
         # Reuse this bytearray to send mouse reports.
         # report[0] buttons pressed (LEFT, MIDDLE, RIGHT)

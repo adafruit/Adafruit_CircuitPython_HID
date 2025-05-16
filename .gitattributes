@@ -1,0 +1,11 @@
+# SPDX-FileCopyrightText: 2024 Justin Myers for Adafruit Industries
+#
+# SPDX-License-Identifier: Unlicense
+
+.py text eol=lf
+.rst text eol=lf
+.txt text eol=lf
+.yaml text eol=lf
+.toml text eol=lf
+.license text eol=lf
+.md text eol=lf
