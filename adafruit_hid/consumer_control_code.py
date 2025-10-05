@@ -43,25 +43,25 @@ class ConsumerControlCode:
     """Decrease Brightness"""
     BRIGHTNESS_INCREMENT = 0x6F
     """Increase Brightness"""
-    AL_CONSUMER_CONTROL_CONFIGURATION=0x0183
+    AL_CONSUMER_CONTROL_CONFIGURATION = 0x0183
     """Launch generic controls for device"""
-    AL_EMAIL_READER=0x018A
+    AL_EMAIL_READER = 0x018A
     """Launch e-mail reader"""
-    AL_CALCULATOR=0x0192
+    AL_CALCULATOR = 0x0192
     """Launch calculator"""
-    AL_LOCAL_MACHINE_BROWSER=0x0194
+    AL_LOCAL_MACHINE_BROWSER = 0x0194
     """Launch local machine file browser"""
-    AC_SEARCH=0x0194
+    AC_SEARCH = 0x0194
     """Search for documents"""
-    AC_HOME=0x0221
+    AC_HOME = 0x0221
     """Load the root of a set of objects"""
-    AC_BACK=0x0223
+    AC_BACK = 0x0223
     """Load the previous document"""
-    AC_FORWARD=0x0224
+    AC_FORWARD = 0x0224
     """Load the next document"""
-    AC_STOP=0x0226
+    AC_STOP = 0x0226
     """Stop loading of the current document"""
-    AC_REFRESH=0x0227
+    AC_REFRESH = 0x0227
     """Reload the current document"""
-    AC_BOOKMARKS=0x022A
+    AC_BOOKMARKS = 0x022A
     """Display a list of stored links"""
