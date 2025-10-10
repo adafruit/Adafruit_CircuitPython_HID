@@ -17,7 +17,6 @@ extend-select = [
   "PLC2401",  # non-ascii-name
   "PLC2801",  # unnecessary-dunder-call
   "PLC3002",  # unnecessary-direct-lambda-call
-  "E999",  # syntax-error
   "PLE0101",  # return-in-init
   "F706",  # return-outside-function
   "F704",  # yield-outside-function
