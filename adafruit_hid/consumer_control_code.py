@@ -45,7 +45,7 @@ class ConsumerControlCode:
     """Increase Brightness"""
 
     # some additional codes from a Logitech keyboard, found with Linux evtest
-    CONFIG =0x183
+    CONFIG = 0x183
     """Config"""
     MAIL = 0x18A
     """Mail"""
