@@ -44,20 +44,22 @@ class ConsumerControlCode:
     BRIGHTNESS_INCREMENT = 0x6F
     """Increase Brightness"""
 
-    # some additional codes from a Logitech keyboard, found with Linux evtest
-    CONFIG = 0x183
-    """Config"""
-    MAIL = 0x18A
-    """Mail"""
-    CALCULATOR = 0x192
-    """Calculator"""
-    SEARCH = 0x221
-    """Search"""
-    HOMEPAGE = 0x223
-    """Homepage"""
-    BACK = 0x224
-    """Back"""
-    FORWARD = 0x225
-    """Forward"""
-    BOOKMARKS = 0x22A
-    """Bookmarks"""
+    # some additional codes, from a Logitech keyboard, found with Linux evtest
+    # quick use: uncomment the following lines and drop this file in lib/adafruit_hid/
+
+    # CONFIG = 0x183
+    # """Config"""
+    # MAIL = 0x18A
+    # """Mail"""
+    # CALCULATOR = 0x192
+    # """Calculator"""
+    # SEARCH = 0x221
+    # """Search"""
+    # HOMEPAGE = 0x223
+    # """Homepage"""
+    # BACK = 0x224
+    # """Back"""
+    # FORWARD = 0x225
+    # """Forward"""
+    # BOOKMARKS = 0x22A
+    # """Bookmarks"""
